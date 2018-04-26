@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SCALA</string>
+    <string name="action_settings">Settings</string>
+    <string name="no_stream_found_in_the_network">No stream found in the network</string>
+    <string name="stream">Stream</string>
+    <string name="logfile">logfile</string>
+    <string name="textview">Searching for streams..</string>
+    <string name="filter">Filter</string>
+    <string name="classifier">Classifier</string>
+    <string name="channels">Channels</string>
+    <string name="pref_filtersOn">Filter data</string>
+    <string name="pref_filterChoose">Choose a filter</string>
+    <string name="pref_filter_default">Bandpass</string>
+    <string name="action_favorite">fav</string>
+    <string name="pref_filters">pref_filters</string>
+</resources>

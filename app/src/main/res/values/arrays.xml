@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array 
+        name="pref_filter_entries">
+        <item>Bandpass</item>
+        <item>Identity</item>
+    </string-array>
+    
+    <string-array 
+        name="pref_filter_values">
+        <item>Bandpass</item>
+        <item>Identity</item>
+    </string-array>
+    
+    <string-array 
+        name="checkArtefacts_entries">
+        <item>ON</item>
+        <item>OFF</item>
+    </string-array>
+    
+    <string-array 
+        name="checkArtefacts_values">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+    
+    
+    <string-array 
+        name="pref_sr__entries">
+        <item>250</item>
+        <item>500</item>
+    </string-array>
+    
+    <string-array 
+        name="pref_sr_values">
+        <item>250</item>
+        <item>500</item>
+    </string-array>
+    
+    <string-array 
+        name="pref_trials__entries">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+    </string-array>
+    
+    <string-array 
+        name="pref_trials_values">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+    </string-array>
+    
+    <string-array 
+        name="saveTemplates_entries">
+        <item>ON</item>
+        <item>OFF</item>
+    </string-array>
+    
+    <string-array 
+        name="saveTemplates_values">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+    
+    <string-array 
+        name="sendUDP_entries">
+        <item>ON</item>
+        <item>OFF</item>
+    </string-array>
+    
+    <string-array 
+        name="sendUDP_values">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+    
+    <string-array 
+        name="sendTemplates_entries">
+        <item>ON</item>
+        <item>OFF</item>
+    </string-array>
+    
+    <string-array 
+        name="sendTemplates_values">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+    
+    <string-array 
+        name="pref_channel_entries">
+        <item>left</item>
+        <item>right</item>
+    </string-array>
+    
+    <string-array 
+        name="pref_channel_values">
+        <item>left</item>
+        <item>right</item>
+    </string-array>
+
+    
+</resources>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+   <PreferenceCategory
+       android:title="Recording Specifications"
+       android:key="category_analysisSpecs">
+    
+    <ListPreference
+        android:defaultValue="@string/pref_filter_default"
+        android:dialogTitle="@string/pref_filterChoose"
+        android:enabled="true"
+        android:entries="@array/pref_filter_entries"
+        android:entryValues="@array/pref_filter_values"
+        android:key="pref_filters"
+        android:selectable="true"
+        android:title="Filter" />
+    
+    <ListPreference
+        android:defaultValue="250"
+        android:dialogTitle="Choose a Sampling Rate"
+        android:enabled="true"
+        android:entries="@array/pref_sr__entries"
+        android:entryValues="@array/pref_sr_values"
+        android:key="pref_sr"
+        android:selectable="true"
+        android:title="SamplingRate" />
+       
+    </PreferenceCategory>
+    
+     
+    <PreferenceCategory
+        android:title="Artefact Detection"
+        android:key="category_artefacts">
+        
+	    <SwitchPreference 
+	        android:key="checkArtefacts" 
+	        android:enabled="true" 
+	        android:defaultValue="false" 
+	        android:title="Artefact Detection" 
+	        android:entries="@array/checkArtefacts_entries"
+	        android:entryValues="@array/checkArtefacts_values"
+	        android:selectable="true"/>  
+	        
+	    
+	   <EditTextPreference
+	        android:key="threshold"
+	        android:summary="Enter threshold for artefact rejection"
+	        android:dependency="checkArtefacts"
+	        android:title="Threshold" />
+	    
+   </PreferenceCategory>
+   
+    <PreferenceCategory        
+        android:title="Training and Templates"
+        android:key="category_training">
+	   
+         <ListPreference
+	        android:defaultValue="10"
+	        android:dialogTitle="How many training trials altogether?"
+	        android:enabled="true"
+	        android:entries="@array/pref_trials__entries"
+	        android:entryValues="@array/pref_trials_values"
+	        android:key="pref_trials"
+	        android:selectable="true"
+	        android:title="Training Trials altogether" />
+
+	    <SwitchPreference 
+	        android:key="saveTemplates" 
+	        android:enabled="true" 
+	        android:defaultValue="false" 
+	        android:title="Save Templates to File" 
+	        android:entries="@array/saveTemplates_entries"
+	        android:entryValues="@array/saveTemplates_values"
+	        android:selectable="true"/>  
+	            
+	    <EditTextPreference
+	        android:key="subjectName"
+	        android:summary="eg.: subj_01"
+	        android:dependency="saveTemplates"
+	        android:title="Enter Subject Name (no spaces)" />
+	    
+ 	</PreferenceCategory>
+   
+
+    
+    <PreferenceCategory        
+        android:title="Communication"
+        android:key="category_communication">
+    
+	    <SwitchPreference 
+	        android:key="sendOutTemplates" 
+	        android:enabled="true" 
+	        android:defaultValue="false" 
+	        android:title="Send out generated Templates via TCP" 
+	        android:entries="@array/sendTemplates_entries"
+	        android:entryValues="@array/sendTemplates_values"
+	        android:selectable="true"/>  
+	        
+	    <SwitchPreference 
+	        android:key="sendUDPmessages" 
+	        android:enabled="true" 
+	        android:defaultValue="false" 
+	        android:title="Send out UDP messages on Port 50008" 
+	        android:entries="@array/sendUDP_entries"
+	        android:entryValues="@array/sendUDP_values"
+	        android:selectable="true"/>  
+    </PreferenceCategory>
+    
+   
+    <PreferenceCategory        
+        android:title="Channel Selection"
+        android:key="category_channels">
+
+	    <EditTextPreference
+	        android:key="one"
+	        android:summary="Enter Index Channel 1"
+	        android:title="Channel 1" />
+	    
+	    <EditTextPreference
+	        android:key="two"
+	        android:summary="Enter Index Channel 2"
+	        android:title="Channel 2" />
+     
+     </PreferenceCategory>
+
+</PreferenceScreen>
