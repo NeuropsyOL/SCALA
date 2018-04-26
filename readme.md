@@ -3,6 +3,10 @@
 An Android application for the online signal processing and classification of time-series data. 
 
 
+## Overview of data flow
+SCALA receives and sends out data using the LabstreamingLayer (https://github.com/sccn/labstreaminglayer).
+
+
 
    Copyright 2017,  Sarah Blum
    
