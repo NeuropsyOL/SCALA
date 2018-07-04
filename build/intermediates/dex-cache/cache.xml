@@ -7,7 +7,7 @@
         jumboMode="true"
         optimize="true"
         revision="26.0.0"
-        sha1="75841d835e252bc5a2f540249b6006a6117a630d">
+        sha1="0f1331e07e88acc55a4c29e0e720405373f68ff3">
         <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_b04aaf4dcc4c99bc8a0ec8bc12318b76f4be0913\classes.dex" />
     </item>
     <item
@@ -20,24 +20,6 @@
         <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1_0e0e198204435cdfc7c27ae82f4d779b77c0d698.jar" />
     </item>
     <item
-        is-multidex="false"
-        jar="C:\Users\sarah\.android\build-cache\03b244d90e77130006ac0ec5fe6e471ae01af43a\output\jars\libs\internal_impl-22.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="26.0.0"
-        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
-        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1_da85b220981d8d136b2e12e0da73592296b201cb.jar" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\sarah\.android\build-cache\099134f6e2d499eb107611d8cd9983f57db5370f\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.0"
-        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
-        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_4c4e18e6e5ca216ae7c32eefb51ffabb2fae885a\classes.dex" />
-    </item>
-    <item
         is-multidex="true"
         jar="E:\Android-sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
         jumboMode="true"
@@ -47,22 +29,22 @@
         <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-22.2.1_0e0e198204435cdfc7c27ae82f4d779b77c0d698\classes.dex" />
     </item>
     <item
-        is-multidex="false"
-        jar="C:\Users\sarah\.android\build-cache\099134f6e2d499eb107611d8cd9983f57db5370f\output\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="26.0.0"
-        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
-        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\pre-dexed\debug\classes_4c4e18e6e5ca216ae7c32eefb51ffabb2fae885a.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\sarah\.android\build-cache\03b244d90e77130006ac0ec5fe6e471ae01af43a\output\jars\classes.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="C:\Users\sarah\.android\build-cache\39425bea4c770daddd279a5217e64be8b2a0375a\output\jars\classes.jar"
+        jumboMode="true"
         optimize="true"
         revision="26.0.0"
         sha1="f8efd0096475e0daf054267b61544e10dc776503">
-        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\pre-dexed\debug\classes_71fffa3a4bcaa3f4d805979062f24f9f432a7c2f.jar" />
+        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_daed483e7c5c37458d8b635a12ed79941515d7e1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\sarah\.android\build-cache\05c84ad418143832a8685a1640a3b61a31791338\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2a305fbafbf8e4fd23bc95038ff41e2ecec85117\classes.dex" />
     </item>
     <item
         is-multidex="false"
@@ -83,15 +65,6 @@
         <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\2\commons-math3-3.6.1_9856239302a498c95f1348736e39d2210ef6912c\classes.dex" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\sarah\.android\build-cache\03b244d90e77130006ac0ec5fe6e471ae01af43a\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.0"
-        sha1="f8efd0096475e0daf054267b61544e10dc776503">
-        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_71fffa3a4bcaa3f4d805979062f24f9f432a7c2f\classes.dex" />
-    </item>
-    <item
         is-multidex="false"
         jar="E:\Documents\Phd\SCALA\app\libs\rtandroid-20161201.jar"
         jumboMode="false"
@@ -102,12 +75,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\sarah\.android\build-cache\03b244d90e77130006ac0ec5fe6e471ae01af43a\output\jars\libs\internal_impl-22.2.1.jar"
+        jar="C:\Users\sarah\.android\build-cache\39425bea4c770daddd279a5217e64be8b2a0375a\output\jars\libs\internal_impl-22.2.1.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.0"
         sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
-        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-22.2.1_da85b220981d8d136b2e12e0da73592296b201cb\classes.dex" />
+        <dex dex="E:\Documents\Phd\SCALA\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-22.2.1_ab88520190bb53b0ca932e5cf602e20f491ed68f\classes.dex" />
     </item>
     <item
         is-multidex="true"

@@ -17,26 +17,34 @@ import android.util.Log;
 public class BandpassFilter extends AFilter {
 
 	/**
-	 * Amount of samples that contain a filter artefact. They are overwritten by
+	 * Amount of samples that contain a filter artifact. They are overwritten by
 	 * zeros.
 	 */
 	private static final int OFFSET = 20;
 
 
+	/**
+	 * Call for filter coeffs: [b,a] = butter(order/2,[cutoffFreq_low, cutoffFreq_high]/(fs/2));
+	 */
 	/*
-	 * 4th order butterworth filter coefficients matlab 250 sr
+	 * 8th order butterworth filter coefficients matlab 250 sr
 	 */
 	double[] b250 =    {1.832160125379204e-04,                         0 ,   -7.328640501516815e-04      ,                   0   ,  1.099296075227522e-03   ,                      0   , -7.328640501516815e-04    ,                     0  ,   1.832160125379204e-04};
 	double[] a250 =     {1.000000000000000e+00 ,   -7.318433515406564e+00  ,   2.347387075996193e+01 ,  -4.310456619909489e+01  ,   4.956600435918099e+01  ,  -3.655028992253353e+01   ,  1.687955722302630e+01  ,  -4.463620903213814e+00   ,  5.174781997880424e-01};
 
 	
 	/*
-	 * 4th order butterworth filter coefficients matlab 500 sr
+	 * 8th order butterworth filter coefficients matlab 500 sr
 	 */
 	double[] b500 = {1.32937116496988e-05,	0,	-5.31748465987951e-05,	0,	7.97622698981927e-05,	0,	-5.31748465987951e-05,	0,	1.32937116496988e-05};
 	double[] a500 = {1,	-7.66505818305434,	25.7165268368310,	-49.3262686262468,	59.1608906543191	,-45.4343659950015,	21.8187597749863	,-5.99039478911790,	0.719910327291872};
-	
-	
+
+
+	/*
+	 * 8th order butterworth filter coefficients matlab 500 sr
+	 */
+	double[] b1000 = {0.000151409727830226, 0,  -0.000605638911320906,   0, 0.000908458366981359,  0,-0.000605638911320906, 0, 0.000151409727830226};
+	double[] a1000 = { 1, -7.36508881404129, 23.7596419249164,-43.8532595395673,  50.6534048266954  ,-37.4956516724939 ,17.3713592656696 , -4.60531495907544, 0.534908967970625};
 	public BandpassFilter() {
 		super();
 		System.out.println("We created a bandpass Filter object");
@@ -68,9 +76,12 @@ public class BandpassFilter extends AFilter {
 			if (prefs.samplingRate == 250) {
 				filtered = filterM(b250,a250,valuesFromOneChannel);
 			} else if (prefs.samplingRate == 500) {
-				filtered = filterM(b500,a500,valuesFromOneChannel);
+				filtered = filterM(b500, a500, valuesFromOneChannel);
+			}else if (prefs.samplingRate == 1000){
+				filtered = filterM(b1000, a1000, valuesFromOneChannel);
 			} else {
-				Log.e("filter", "wrong samplig rate detected!");
+				filtered = filterM(b250, a250, valuesFromOneChannel);
+				Log.w("filter", "Unsupported Sampling Rate detected! Only 250 Hz, 500Hz and 1000Hz are supported. Falling back to 250 Hz!");
 			}
 			filteredBuffer.insertChannelData(i, filtered);
 		}
@@ -110,9 +121,6 @@ public class BandpassFilter extends AFilter {
 	 * With the current time domain filter, a filter artefact is visible in
 	 * the first ~10 samples. This method overwrites these samples with zeros,
 	 * so that later analyses are not affected by the artefact.
-	 * 
-	 * @param 
-	 *       the filtered values buffer which is to be treated
 	 * 
 	 */
 	private void removeFilterArtefact(SampleBuffer filteredValuesBuffer) {

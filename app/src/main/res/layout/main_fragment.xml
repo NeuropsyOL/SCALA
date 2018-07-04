@@ -39,7 +39,7 @@
         android:layout_above="@+id/loadLeftTemplate"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:text="Start Experiment"
+        android:text="@string/proceedButton"
         android:textStyle="bold" />
     
 </RelativeLayout>

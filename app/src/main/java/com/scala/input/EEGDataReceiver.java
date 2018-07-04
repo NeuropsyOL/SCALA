@@ -105,6 +105,8 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 	
 	private ScalaPreferences prefs;
 
+	private volatile boolean running = false;
+
 
 
 	/**
@@ -142,10 +144,15 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 			e.printStackTrace();
 		}
 		if (doneResolving) {
-			while (true) {
+			running = true;
+			while (running) {
 				getOneValueForCallback();
 			}
 		}
+	}
+
+	public void stopRunning(){
+		running = false;
 	}
 
 	/**
@@ -244,8 +251,7 @@ public boolean resolveIncomingStream() {
 	/**
 	 * Helper method to store the content of a vectord type sample into an array
 	 * 
-	 * @param the
-	 *            sample of the LSL library type vectord
+	 * @param sample the sample of the LSL library type vectord
 	 * @return a double array containing the content of the vectord sample
 	 */
 	private static double[] vectordToArray(final vectord sample) {
@@ -373,7 +379,6 @@ public boolean resolveIncomingStream() {
 	 */
 	public void setFilterCallback(IEEGFilledRawDataBufferListener rawValuesListener) {
 		this.rawValuesListener = rawValuesListener;
-
 	}
 
 }

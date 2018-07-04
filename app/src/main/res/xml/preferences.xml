@@ -30,24 +30,17 @@
      
     <PreferenceCategory
         android:title="Artefact Detection"
-        android:key="category_artefacts">
+        android:key="category_artifacts">
         
 	    <SwitchPreference 
-	        android:key="checkArtefacts" 
+	        android:key="checkArtifacts"
 	        android:enabled="true" 
 	        android:defaultValue="false" 
-	        android:title="Artefact Detection" 
-	        android:entries="@array/checkArtefacts_entries"
-	        android:entryValues="@array/checkArtefacts_values"
+	        android:title="Artifact Detection"
+	        android:entries="@array/checkArtifacts_entries"
+	        android:entryValues="@array/checkArtifacts_values"
 	        android:selectable="true"/>  
-	        
-	    
-	   <EditTextPreference
-	        android:key="threshold"
-	        android:summary="Enter threshold for artefact rejection"
-	        android:dependency="checkArtefacts"
-	        android:title="Threshold" />
-	    
+
    </PreferenceCategory>
    
     <PreferenceCategory        

@@ -13,9 +13,12 @@ import com.scala.input.IEEGSingleSamplesListener;
 import com.scala.tools.ScalaPreferences;
 import com.scala.tools.FileChooser;
 import com.scala.tools.SampleBuffer;
+import com.scala.view.CalibrationFragment;
+import com.scala.view.CalibrationResult;
 import com.scala.view.MainFragment;
 import com.scala.view.SettingsFragment;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -65,7 +68,7 @@ import android.widget.Toast;
  *
  * @author sarah
  */
-public class MainActivity extends AppCompatActivity implements IEEGSingleSamplesListener {
+public class MainActivity extends AppCompatActivity implements IEEGSingleSamplesListener, CalibrationFragment.OnCalibrationFragmentListener {
 
 
 	/*
@@ -105,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	 * be used throughout the rest of the app to prevent an Android dependency
 	 * of the single classes.
 	 */
-	private ScalaPreferences clapPrefs;
+	private ScalaPreferences scalaPrefs;
 
 	/**
 	 * The editor for the storage of the settings.
@@ -141,14 +144,14 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	private static final Pattern COMMA_OR_NEWLINE_DELIMITER = Pattern.compile("[,\\n\\r]"); //(, | \s)
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
-	private Button loadRightTemplates;
+	private Button loadRightTemplatesButton;
 
-	private Button loadLeftTemplates;
+	private Button loadLeftTemplatesButton;
 
-	private Button startExperiment;
+	private Button proceedButton;
 
 	/**
-	 * Needed to keep the CPU active when CLAP is in the background
+	 * Needed to keep the CPU active when SCALA is in the background
 	 */
 	private WakeLock wakeLock;
 
@@ -162,61 +165,91 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		templates = new SampleBuffer(1000, 2);
 
 
-		loadLeftTemplates = (Button) findViewById(R.id.loadLeftTemplate);
-		loadLeftTemplates.setOnClickListener(new View.OnClickListener() {
+		loadLeftTemplatesButton = (Button) findViewById(R.id.loadLeftTemplate);
+		loadLeftTemplatesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				loadTemplates(0);
 				// after you loaded a template, you cannot load another one
-				loadLeftTemplates.setClickable(false);
-				loadLeftTemplates.setAlpha(.5f);
+				loadLeftTemplatesButton.setClickable(false);
+				loadLeftTemplatesButton.setAlpha(.5f);
 			}
 		});
 
-		loadRightTemplates = (Button) findViewById(R.id.loadRightTemplate);
-		loadRightTemplates.setOnClickListener(new View.OnClickListener() {
+		loadRightTemplatesButton = (Button) findViewById(R.id.loadRightTemplate);
+		loadRightTemplatesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				loadTemplates(1);
 				// after you loaded a template, you cannot load another one
-				loadRightTemplates.setClickable(false);
-				loadRightTemplates.setAlpha(.5f);
+				loadRightTemplatesButton.setClickable(false);
+				loadRightTemplatesButton.setAlpha(.5f);
 			}
 		});
 
-		loadRightTemplates.setClickable(true);
-		loadLeftTemplates.setClickable(true);
+		loadRightTemplatesButton.setClickable(true);
+		loadLeftTemplatesButton.setClickable(true);
 
-		startExperiment = (Button) findViewById(R.id.startExperiment);
-		startExperiment.setOnClickListener(new View.OnClickListener() {
+		proceedButton = (Button) findViewById(R.id.startExperiment);
+		proceedButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				handlePreferences();
-				CharSequence text = "Preferences have been updated.";
-				int duration = Toast.LENGTH_LONG;
-				Toast t = Toast.makeText(getApplicationContext(), text, duration);
-				t.show();
-				loadRightTemplates.setClickable(true);
-				loadLeftTemplates.setClickable(true);
-				// you shall not update the preferences again
-				startExperiment.setClickable(false);
-				startExperiment.setAlpha(.5f);
+                // you shall not update the preferences again
+                proceedButton.setClickable(false);
+                proceedButton.setAlpha(.5f);
+                updatePreferences();
+                /*
+                 * prepare() calls makeFilter() which produces a filter object based on
+                 * the settings. Additionally, the MainController gets objects from the
+                 * receiving classes and the InputController and starts the UDP
+                 * listening thread.
+                 */
+                if (mainController == null) {
+                    mainController = new MainController(scalaPrefs);
+                    mainController.prepare();
+                    mainController.setDiagnosticSampleReceiver(MainActivity.this);
+                }
 
+                CharSequence text = "Preferences have been updated.";
+                int duration = Toast.LENGTH_LONG;
+                Toast t = Toast.makeText(getApplicationContext(), text, duration);
+                t.show();
+                loadRightTemplatesButton.setClickable(true);
+                loadLeftTemplatesButton.setClickable(true);
 	            // when we loaded templates, hand them over to the Main Controller
-	            if (!clapPrefs.isTemplateGeneration) {
+	            if (!scalaPrefs.isTemplateGeneration) {
 	            	mainController.setTemplateBuffer(templates);
 	            	Log.i("File", "template buffer has been passed to MainController");
 	            }
+
+	            if (scalaPrefs.checkArtifacts){
+	                // the button now delegates to the calibration activity where it collects calibration data
+                    CalibrationFragment calibrationFragment = new CalibrationFragment();
+                    calibrationFragment.setOriginalPreferences(scalaPrefs);
+                    switchFragment(R.id.fragment1, calibrationFragment);
+                }
 			}
 		});
 
+
+		/*
+		Keep SCALA active when it's running in the background.
+		 */
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag");
 		wakeLock.acquire();
 
 	}
 
-	/**
+    private void switchFragment(int fragmentId, Fragment sf) {
+        getFragmentManager()
+                .beginTransaction()
+                .replace(fragmentId, sf)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    /**
 	 * Method which is called, when the user presses one of the buttons
 	 * to load a template.
 	 *
@@ -281,45 +314,31 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	 * This method fills the wrapper preferences object with the settings from
 	 * the Android shared preferences object.
 	 */
-	private void handlePreferences() {
-		// set default values for preferences
+	private void updatePreferences() {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, READ_AGAIN);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		clapPrefs = new ScalaPreferences();
-		clapPrefs.filterType = prefs.getString("pref_filters","Bandpass");
-		clapPrefs.samplingRate = Integer.parseInt(prefs.getString("pref_sr", "250"));
-		clapPrefs.buffer_capacity = WINDOW_WIDTH * clapPrefs.samplingRate;
-		clapPrefs.howManyTrialsForTemplateGen = Integer.parseInt(prefs.getString("pref_trials", "10"));
-		if (clapPrefs.howManyTrialsForTemplateGen == 0){
-			clapPrefs.isTemplateGeneration = false;
+		scalaPrefs = new ScalaPreferences();
+		scalaPrefs.filterType = prefs.getString("pref_filters","Bandpass");
+		scalaPrefs.samplingRate = Integer.parseInt(prefs.getString("pref_sr", "250"));
+		scalaPrefs.buffer_capacity = WINDOW_WIDTH * scalaPrefs.samplingRate;
+		scalaPrefs.howManyTrialsForTemplateGen = Integer.parseInt(prefs.getString("pref_trials", "10"));
+		if (scalaPrefs.howManyTrialsForTemplateGen == 0){
+			scalaPrefs.isTemplateGeneration = false;
 		}
-		clapPrefs.sendUDPmessages = prefs.getBoolean("sendUDPmessages", false);
-		clapPrefs.sendTemplates = prefs.getBoolean("sendTemplates", false);
+		scalaPrefs.sendUDPmessages = prefs.getBoolean("sendUDPmessages", false);
+		scalaPrefs.sendTemplates = prefs.getBoolean("sendTemplates", false);
 
-		clapPrefs.one = Integer.parseInt(prefs.getString("one","9"));
-		clapPrefs.two = Integer.parseInt(prefs.getString("two","8"));
-		clapPrefs.one -= 1;
-		clapPrefs.two -= 1;
+		scalaPrefs.one = Integer.parseInt(prefs.getString("one","1"));
+		scalaPrefs.two = Integer.parseInt(prefs.getString("two","2"));
+		scalaPrefs.one -= 1; // adjust for off-by-one index situation
+		scalaPrefs.two -= 1;
 
-		clapPrefs.saveTemplate = prefs.getBoolean("saveTemplates", false);
-		clapPrefs.subjectName = prefs.getString("subjectName", "subj_00");
-		clapPrefs.checkArtefacts = prefs.getBoolean("checkArtefacts", false);
-		clapPrefs.threshold = Double.parseDouble(prefs.getString("threshold", "0.0"));
+		scalaPrefs.saveTemplate = prefs.getBoolean("saveTemplates", false);
+		scalaPrefs.subjectName = prefs.getString("subjectName", "subj_00");
+		scalaPrefs.checkArtifacts = prefs.getBoolean("checkArtifacts", false);
 
 		Log.i(LSLSTREAM_TAG, "chosen settings are: " + prefs.getAll() );
-
-
-		/*
-		 * prepare() calls makeFilter() which produces a filter object based on
-		 * the settings. Additionally, the MainController gets objects from the
-		 * receiving classes and the InputController and starts the UDP
-		 * listening thread.
-		 */
-		mainController = new MainController(clapPrefs);
-		mainController.prepare();
-		mainController.setDiagnosticSampleReceiver(this);
-
 	}
 
 	/**
@@ -347,19 +366,14 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			inSettings = true;
-			SettingsFragment sf = new SettingsFragment();
-			getFragmentManager()
-					.beginTransaction()
-					.replace(R.id.fragment1, sf)
-					.addToBackStack(null)
-					.commit();
+            switchFragment(R.id.fragment1, new SettingsFragment());
 			// hide the buttons
-			loadRightTemplates.setVisibility(View.INVISIBLE);
-			loadRightTemplates.setClickable(false);
-			loadLeftTemplates.setVisibility(View.INVISIBLE);
-			loadLeftTemplates.setClickable(false);
-			startExperiment.setVisibility(View.INVISIBLE);
-			startExperiment.setClickable(false);
+			loadRightTemplatesButton.setVisibility(View.INVISIBLE);
+			loadRightTemplatesButton.setClickable(false);
+			loadLeftTemplatesButton.setVisibility(View.INVISIBLE);
+			loadLeftTemplatesButton.setClickable(false);
+			proceedButton.setVisibility(View.INVISIBLE);
+			proceedButton.setClickable(false);
 					
 			return true;
 		default:
@@ -378,6 +392,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	@Override
 	public void onBackPressed() {
 		if (inSettings) {
+		    updatePreferences();
 			backFromSettingsFragment();
 			return;
 		}
@@ -388,12 +403,14 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		inSettings = false;
 		getFragmentManager().popBackStack();
 		// make the buttons visible again
-		loadRightTemplates.setVisibility(View.VISIBLE);
-		loadLeftTemplates.setVisibility(View.VISIBLE);
-		loadLeftTemplates.setClickable(true);
-		loadRightTemplates.setClickable(true);
-		startExperiment.setVisibility(View.VISIBLE);
-		startExperiment.setClickable(true);
+		loadRightTemplatesButton.setVisibility(View.VISIBLE);
+		loadLeftTemplatesButton.setVisibility(View.VISIBLE);
+		loadLeftTemplatesButton.setClickable(true);
+		loadRightTemplatesButton.setClickable(true);
+		int proceedButtonText = scalaPrefs.checkArtifacts ? R.string.proceedButtonCalib : R.string.proceedButton;
+        proceedButton.setText(proceedButtonText);
+		proceedButton.setVisibility(View.VISIBLE);
+		proceedButton.setClickable(true);
 	}
 
 	/**
@@ -411,4 +428,12 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		});
 	}
 
+
+	/**
+	 * Receive data from the Calibration Fragment
+	 */
+    @Override
+    public void onCalibrationEnded(CalibrationResult calibRes) {
+        // hand over to the mainController or something else which is good
+    }
 }
