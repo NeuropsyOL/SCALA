@@ -164,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		// instantiate the template buffer object because we get a nullpointer exc. otherwise
 		templates = new SampleBuffer(1000, 2);
 
-
 		/*loadLeftTemplatesButton = (Button) findViewById(R.id.loadLeftTemplate);
 		loadLeftTemplatesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -198,7 +197,12 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
                 // you shall not update the preferences again
                 proceedButton.setClickable(false);
                 proceedButton.setAlpha(.5f);
-
+                updatePreferences();
+                if (mainController == null) {
+                    mainController = new MainController(scalaPrefs);
+                    mainController.prepare();
+                    mainController.setDiagnosticSampleReceiver(MainActivity.this);
+                }
                 CharSequence text = "Preferences have been updated.";
                 int duration = Toast.LENGTH_LONG;
                 Toast t = Toast.makeText(getApplicationContext(), text, duration);
@@ -206,10 +210,10 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
                 //loadRightTemplatesButton.setClickable(true);
                 //loadLeftTemplatesButton.setClickable(true);
 	            // when we loaded templates, hand them over to the Main Controller
-	            if (!scalaPrefs.isTemplateGeneration) {
-	            	mainController.setTemplateBuffer(templates);
-	            	Log.i("File", "template buffer has been passed to MainController");
-	            }
+//	            if (!scalaPrefs.isTemplateGeneration) {
+//	            	mainController.setTemplateBuffer(templates);
+//	            	Log.i("File", "template buffer has been passed to MainController");
+//	            }
 
 	            if (scalaPrefs.checkArtifacts){
 	                // the button now delegates to the calibration activity where it collects calibration data
@@ -430,11 +434,11 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 
 
 	/**
-	 * Receive data from the Calibration Fragment
+	 * Receive data from the Calibration Fragment as soon as the calibration is finished.
 	 */
     @Override
     public void onCalibrationEnded(CalibrationResult calibRes) {
         // hand over to the mainController or something else which is good
-//		this.mainController.calibState = calibRes;
+		mainController.setup_jASR(calibRes);
     }
 }

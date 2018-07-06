@@ -147,11 +147,6 @@ public class MainController {
 	// if true: produce anchor sample output for matlab streamer checks
 	private boolean debug = false;
 
-	/*
-	 * FIXME This shouldn't be public.
-	 */
-	public CalibrationResult calibResult;
-
 	private ASR_Process proc;
 
 
@@ -175,9 +170,6 @@ public class MainController {
 	 */
 	public void prepare() {
 		makeFilter();
-		if (prefs.checkArtifacts){
-		    preparejASR();
-        }
 		communicationController = new CommunicationController(prefs);
 
 		/*
@@ -210,8 +202,8 @@ public class MainController {
 		filter = prefs.filterOn ? new BandpassFilter() : new IdentityFilter();
 	}
 
-    private void preparejASR() {
-        proc = new ASR_Process(calibResult.calibState, prefs.samplingRate);
+    private void preparejASR(CalibrationResult calibRes) {
+        proc = new ASR_Process(calibRes.calibState, prefs.samplingRate);
 	}
 
 	/**
@@ -452,4 +444,7 @@ public class MainController {
 		return idx;
 	}
 
+    public void setup_jASR(CalibrationResult calibRes) {
+	    preparejASR(calibRes);
+    }
 }
