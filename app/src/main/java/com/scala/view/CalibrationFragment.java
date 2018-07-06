@@ -1,20 +1,22 @@
 package com.scala.view;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.asr.sab.cal.ASR_Calibration;
-import com.scala.filter.IEEGFilledRawDataBufferListener;
 import com.scala.input.EEGDataReceiver;
 import com.scala.out.R;
 import com.scala.tools.SampleBuffer;
 import com.scala.tools.ScalaPreferences;
+
+import java.util.TimerTask;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +27,8 @@ import com.scala.tools.ScalaPreferences;
 public class CalibrationFragment extends Fragment {
 
     // duration of calibration in seconds
-    private static final int CALIB_DURATION = 60;
+    private static final int CALIB_DURATION = 10; // debug value 10, make it 60 in the end!
+    private SampleBuffer calibData;
 
     private OnCalibrationFragmentListener mListener;
     private ScalaPreferences preferences;
@@ -38,8 +41,16 @@ public class CalibrationFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // get view object to interact with items in the fragment
+        View view = inflater.inflate(R.layout.fragment_calibration, container, false);
+        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        int maxValue=progressBar.getMax(); // get maximum value of the progress bar
+
+        // fill progress bar by value of sample buffer
+        progressBar.setProgress(40); //calibData.getCurrentFillingIndex());
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calibration, container, false);
+        return view;
     }
 
     @Override
@@ -51,38 +62,33 @@ public class CalibrationFragment extends Fragment {
             throw new RuntimeException(activity.toString()
                     + " must implement OnCalibrationFragmentListener");
         }
-
         beginCalibration();
     }
 
     private void beginCalibration() {
         ScalaPreferences calibPrefs = new ScalaPreferences(preferences);
-        /**
+        /*
          * EEGDataReceiver needs to know in advance how many samples he should store for further
          * usage
          */
         calibPrefs.buffer_capacity = CALIB_DURATION * preferences.samplingRate;
 
         EEGDataReceiver calibrationDataReceiver = new EEGDataReceiver();
-        calibrationDataReceiver.setFilterCallback(new IEEGFilledRawDataBufferListener() {
-            @Override
-            public void handleDataBuffer(SampleBuffer EEGdata) {
-                processCalibrationData(calibrationDataReceiver);
-            }
+        calibrationDataReceiver.setFilterCallback(EEGdata -> processCalibrationData(calibrationDataReceiver));
+        AsyncTask.execute(() -> {
+            Log.i("Calib", "We are now collecting data for the calibration in another thread");
+            calibrationDataReceiver.prepareAndStart(calibPrefs);
+
         });
-        AsyncTask.execute(() -> calibrationDataReceiver.prepareAndStart(calibPrefs));
     }
 
     private void processCalibrationData(EEGDataReceiver calibrationDataReceiver) {
         calibrationDataReceiver.stopRunning();
-        SampleBuffer calibData = calibrationDataReceiver.getBuffer();
+        calibData = calibrationDataReceiver.getBuffer();
         /*
          * start calibration calculation
-         *
-         * TODO convert buffer to array. consider correct order!
          */
-        double[][] calibDataAsArray = {{}};
-        ASR_Calibration calibration = new ASR_Calibration(calibDataAsArray);
+        ASR_Calibration calibration = new ASR_Calibration(calibData.getBufferAsArray());
 
         // Hand over data to MainFragment
         CalibrationResult calibrationResult = new CalibrationResult();
@@ -91,6 +97,7 @@ public class CalibrationFragment extends Fragment {
         mListener.onCalibrationEnded(calibrationResult);
 
         // TODO return to MainFragment
+
     }
 
     @Override

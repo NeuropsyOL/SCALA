@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		templates = new SampleBuffer(1000, 2);
 
 
-		loadLeftTemplatesButton = (Button) findViewById(R.id.loadLeftTemplate);
+		/*loadLeftTemplatesButton = (Button) findViewById(R.id.loadLeftTemplate);
 		loadLeftTemplatesButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 
 		loadRightTemplatesButton.setClickable(true);
 		loadLeftTemplatesButton.setClickable(true);
+        */
 
 		proceedButton = (Button) findViewById(R.id.startExperiment);
 		proceedButton.setOnClickListener(new View.OnClickListener() {
@@ -197,25 +198,13 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
                 // you shall not update the preferences again
                 proceedButton.setClickable(false);
                 proceedButton.setAlpha(.5f);
-                updatePreferences();
-                /*
-                 * prepare() calls makeFilter() which produces a filter object based on
-                 * the settings. Additionally, the MainController gets objects from the
-                 * receiving classes and the InputController and starts the UDP
-                 * listening thread.
-                 */
-                if (mainController == null) {
-                    mainController = new MainController(scalaPrefs);
-                    mainController.prepare();
-                    mainController.setDiagnosticSampleReceiver(MainActivity.this);
-                }
 
                 CharSequence text = "Preferences have been updated.";
                 int duration = Toast.LENGTH_LONG;
                 Toast t = Toast.makeText(getApplicationContext(), text, duration);
                 t.show();
-                loadRightTemplatesButton.setClickable(true);
-                loadLeftTemplatesButton.setClickable(true);
+                //loadRightTemplatesButton.setClickable(true);
+                //loadLeftTemplatesButton.setClickable(true);
 	            // when we loaded templates, hand them over to the Main Controller
 	            if (!scalaPrefs.isTemplateGeneration) {
 	            	mainController.setTemplateBuffer(templates);
@@ -292,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	 */
 	private static double[] readDoublesFromFile(String filename,  String charsetName) {
 		List<Double> list = new LinkedList<>();
-
 		try(Scanner s = new Scanner(new File(filename), charsetName)) {
 			s.useDelimiter(COMMA_OR_NEWLINE_DELIMITER);
 			while(s.hasNextDouble()) {
@@ -301,11 +289,9 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
 		double[] result = new double[list.size()];
 		int i = 0;
 		for(double value : list) result[i++] = value;
-
 		return result;
 	}
 
@@ -317,7 +303,6 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	private void updatePreferences() {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, READ_AGAIN);
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
 		scalaPrefs = new ScalaPreferences();
 		scalaPrefs.filterType = prefs.getString("pref_filters","Bandpass");
 		scalaPrefs.samplingRate = Integer.parseInt(prefs.getString("pref_sr", "250"));
@@ -328,12 +313,10 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		}
 		scalaPrefs.sendUDPmessages = prefs.getBoolean("sendUDPmessages", false);
 		scalaPrefs.sendTemplates = prefs.getBoolean("sendTemplates", false);
-
 		scalaPrefs.one = Integer.parseInt(prefs.getString("one","1"));
 		scalaPrefs.two = Integer.parseInt(prefs.getString("two","2"));
 		scalaPrefs.one -= 1; // adjust for off-by-one index situation
 		scalaPrefs.two -= 1;
-
 		scalaPrefs.saveTemplate = prefs.getBoolean("saveTemplates", false);
 		scalaPrefs.subjectName = prefs.getString("subjectName", "subj_00");
 		scalaPrefs.checkArtifacts = prefs.getBoolean("checkArtifacts", false);
@@ -368,10 +351,10 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 			inSettings = true;
             switchFragment(R.id.fragment1, new SettingsFragment());
 			// hide the buttons
-			loadRightTemplatesButton.setVisibility(View.INVISIBLE);
-			loadRightTemplatesButton.setClickable(false);
-			loadLeftTemplatesButton.setVisibility(View.INVISIBLE);
-			loadLeftTemplatesButton.setClickable(false);
+			//loadRightTemplatesButton.setVisibility(View.INVISIBLE);
+			//loadRightTemplatesButton.setClickable(false);
+			//loadLeftTemplatesButton.setVisibility(View.INVISIBLE);
+			//loadLeftTemplatesButton.setClickable(false);
 			proceedButton.setVisibility(View.INVISIBLE);
 			proceedButton.setClickable(false);
 					
@@ -393,6 +376,17 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	public void onBackPressed() {
 		if (inSettings) {
 		    updatePreferences();
+            /*
+             * prepare() calls makeFilter() which produces a filter object based on
+             * the settings. Additionally, the MainController gets objects from the
+             * receiving classes and the InputController and starts the UDP
+             * listening thread.
+             */
+            if (mainController == null) {
+                mainController = new MainController(scalaPrefs);
+                mainController.prepare();
+                mainController.setDiagnosticSampleReceiver(MainActivity.this);
+            }
 			backFromSettingsFragment();
 			return;
 		}
@@ -403,29 +397,35 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		inSettings = false;
 		getFragmentManager().popBackStack();
 		// make the buttons visible again
-		loadRightTemplatesButton.setVisibility(View.VISIBLE);
-		loadLeftTemplatesButton.setVisibility(View.VISIBLE);
-		loadLeftTemplatesButton.setClickable(true);
-		loadRightTemplatesButton.setClickable(true);
+		//loadRightTemplatesButton.setVisibility(View.VISIBLE);
+		//loadLeftTemplatesButton.setVisibility(View.VISIBLE);
+		//loadLeftTemplatesButton.setClickable(true);
+		//loadRightTemplatesButton.setClickable(true);
 		int proceedButtonText = scalaPrefs.checkArtifacts ? R.string.proceedButtonCalib : R.string.proceedButton;
         proceedButton.setText(proceedButtonText);
 		proceedButton.setVisibility(View.VISIBLE);
 		proceedButton.setClickable(true);
 	}
 
+	private static final long TIME_BETWEEN_SAMPLES_TO_DISPLAY = 50L;
+	private volatile long lastTimeStampOfVisibleSample = 0L;
 	/**
 	 * Implementation of the callback method for the constant visualization of
 	 * one exemplary sample from the incoming eeg stream.
+     * We added a restriction for the actual display of the exemplary sample so that the UI stays responsive
 	 */
 	@Override
 	public void handleEEGSample(double eegSample) {
 		newestValue = eegSample;
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				mf.setStreamDetails(mainController.getStreamInfos(), newestValue);
-			}
-		});
+		if (System.currentTimeMillis() > lastTimeStampOfVisibleSample + TIME_BETWEEN_SAMPLES_TO_DISPLAY) {
+		    // set this to a high value
+		    lastTimeStampOfVisibleSample = System.currentTimeMillis()+1000;
+		    runOnUiThread(() -> {
+                mf.setStreamDetails(mainController.getStreamInfos(), newestValue);
+                // update the value only if we really showed a sample on the screen
+                lastTimeStampOfVisibleSample = System.currentTimeMillis();
+            });
+        }
 	}
 
 

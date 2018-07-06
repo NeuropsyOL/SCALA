@@ -213,6 +213,14 @@ public class SampleBuffer {
 	}
 
 
+	public double[][] getBufferAsArray(){
+		double[][] bufferarray = new double[this.channelCount][this.capacity];
+		for (int i = 0; i < bufferarray.length; i++) { // channels
+			bufferarray[i] = this.getValuesFromOneChannel(i);
+		}
+		return bufferarray;
+	}
+
 	/**
 	 * @return the buffer
 	 */
@@ -229,4 +237,7 @@ public class SampleBuffer {
 	}
 
 
+    public int getCurrentFillingIndex() {
+        return this.pos;
+	}
 }

@@ -136,7 +136,7 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 		boolean doneResolving = resolveIncomingStream();
 		// this is needed because of the parallel execution of all the
 		// functions concerning the stream. when starting the stream first
-		// and then CLAPP, we get a null object reference in the getOneValue
+		// and then SCALA, we get a null object reference in the getOneValue
 		// method.
 		try {
 			Thread.sleep(1000);
