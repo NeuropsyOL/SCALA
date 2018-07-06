@@ -1,5 +1,6 @@
 package com.scala.controller;
 
+import com.asr.sab.proc.ASR_Process;
 import com.scala.classifier.ClassificationResult;
 import com.scala.classifier.CrossCorrMatcher;
 import com.scala.classifier.TemplateCreater;
@@ -11,6 +12,7 @@ import com.scala.input.IEEGSingleSamplesListener;
 import com.scala.tools.ScalaPreferences;
 import com.scala.tools.FileWriterScala;
 import com.scala.tools.SampleBuffer;
+import com.scala.view.CalibrationResult;
 
 import android.util.Log;
 
@@ -145,9 +147,17 @@ public class MainController {
 	// if true: produce anchor sample output for matlab streamer checks
 	private boolean debug = false;
 
-	
-	public MainController(ScalaPreferences SCALArefs) {
-		this.prefs = SCALArefs;
+	/*
+	 * FIXME This shouldn't be public.
+	 */
+	public CalibrationResult calibResult;
+
+	private ASR_Process proc;
+
+
+
+	public MainController(ScalaPreferences SCALAprefs) {
+		this.prefs = SCALAprefs;
 		//this.simpleCorrelationMatcher = new TemplateMatcher();
 		this.xCorrMatcher = new CrossCorrMatcher();
 		this.writer = new FileWriterScala(prefs);
@@ -165,6 +175,9 @@ public class MainController {
 	 */
 	public void prepare() {
 		makeFilter();
+		if (prefs.checkArtifacts){
+		    preparejASR();
+        }
 		communicationController = new CommunicationController(prefs);
 
 		/*
@@ -190,11 +203,15 @@ public class MainController {
 		trialsForTemplateCounter = 0;
 	}
 
-	/**
+    /**
 	 * Make a filter object according to the preferences
 	 */
 	public void makeFilter() {
 		filter = prefs.filterOn ? new BandpassFilter() : new IdentityFilter();
+	}
+
+    private void preparejASR() {
+        proc = new ASR_Process(calibResult.calibState, prefs.samplingRate);
 	}
 
 	/**
@@ -217,27 +234,38 @@ public class MainController {
 	 */
 	public void runSingleTrial() {
 
-		if (debug){
+		if (debug) {
 			double anchorSample = communicationController.getAnchorSample();
 			if (anchorSample != Double.NaN) {
 				int idx = searchAnchorSample(anchorSample);
 				Log.i(TAG_SAMPLE_CHECK, "Idx was: " + idx);
 			}
 		}
-		baselineCorrectionBeforeFilter(); 
-		callFilter();
-		makeDiffChannels();
-		baselineCorrection();
-		//artefactRejection(); 
-		callClassifier();  
+		baselineCorrectionBeforeFilter();
+        if (prefs.checkArtifacts) {
+            correctArtifacts();
+        }
+        callFilter();
+        makeDiffChannels();
+        baselineCorrection();
+		callClassifier();
 
 		// !! most important debug output for comparison of matlab and SCALA !
 		Log.i(TAG_CLASSIFIER_RESULT, "[XCorr]   SCALA_Trial #" + communicationController.getTrialNumber() + " " + resultxCorr);
-
 	}
 
+    private void correctArtifacts() {
+	    Log.i("MC", "Now cleaning data with jASR");
+        double[][] cleanData = proc.asr_process(rawDataBuffer.getBufferAsArray());
+        // sneak cleaned data into buffer
+        // TODO this might be slow af.
+        for (int i = 0; i < cleanData.length ; i++) {
+            rawDataBuffer.insertChannelData(i,cleanData[i]);
+        }
+    }
 
-	/**
+
+    /**
 	 * The bandpass filter is defined (and only stable) for a signal which
 	 * is alternating around zero. This is why we need the baseline correction
 	 * before the signal is filtered.
