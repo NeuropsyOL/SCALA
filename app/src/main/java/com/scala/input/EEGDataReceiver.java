@@ -123,8 +123,21 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
 	}
+
+    /**
+     * Setup the recording of samples into the buffer without receiveing a trigger. blocks until finished.
+     * @param calibPrefs
+     * @param callback
+     */
+	public void recordOneBuffer(ScalaPreferences calibPrefs, IEEGFilledRawDataBufferListener callback) {
+	    setFilterCallback(recordedBuffer -> {
+	        stopRunning();
+            callback.handleDataBuffer(recordedBuffer);
+        });
+        prepareAndStart(calibPrefs);
+        putDataInBuffer(Double.MIN_VALUE); // set timestamp to small number to enforce recording into buffer
+    }
 
 	/**
 	 * The method called when the thread is started. It first resolves streams
@@ -184,12 +197,12 @@ public boolean resolveIncomingStream() {
 	 * Whenever we are done with putting values into the buffer, the MainController
 	 * is notified.
 	 * (handleDataBuffer --> CommunicationController --> MainController --> Party)
-	 * @param timestamp 
+	 * @param startingTimestamp  only record samples that are newer than this timestamp
 	 */
 	@Override
-	public void putDataInBuffer(double timestamp) {
+	public void putDataInBuffer(double startingTimestamp) {
 		recordingIntoBuffer = true;
-		timestamp = this.timestamp;
+		this.timestamp = startingTimestamp;
 		Log.i(TAG_RECEIVER, "recording data into a buffer");
 		synchronized (lock) {
 			try {
@@ -198,7 +211,6 @@ public boolean resolveIncomingStream() {
 				}
 				Log.i(TAG_RECEIVER, "we are done with putting values into the buffer");
 				rawValuesListener.handleDataBuffer(buffer);
-				return;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -380,5 +392,6 @@ public boolean resolveIncomingStream() {
 	public void setFilterCallback(IEEGFilledRawDataBufferListener rawValuesListener) {
 		this.rawValuesListener = rawValuesListener;
 	}
+
 
 }

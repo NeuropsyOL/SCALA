@@ -435,5 +435,6 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
     @Override
     public void onCalibrationEnded(CalibrationResult calibRes) {
         // hand over to the mainController or something else which is good
+		this.mainController
     }
 }

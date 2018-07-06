@@ -16,8 +16,6 @@ import com.scala.out.R;
 import com.scala.tools.SampleBuffer;
 import com.scala.tools.ScalaPreferences;
 
-import java.util.TimerTask;
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -44,10 +42,8 @@ public class CalibrationFragment extends Fragment {
         // get view object to interact with items in the fragment
         View view = inflater.inflate(R.layout.fragment_calibration, container, false);
         ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        int maxValue=progressBar.getMax(); // get maximum value of the progress bar
-
-        // fill progress bar by value of sample buffer
-        progressBar.setProgress(40); //calibData.getCurrentFillingIndex());
+        //TODO fill progress bar by value of sample buffer
+        progressBar.setProgress(75); //calibData.getCurrentFillingIndex());
 
         // Inflate the layout for this fragment
         return view;
@@ -67,24 +63,15 @@ public class CalibrationFragment extends Fragment {
 
     private void beginCalibration() {
         ScalaPreferences calibPrefs = new ScalaPreferences(preferences);
-        /*
-         * EEGDataReceiver needs to know in advance how many samples he should store for further
-         * usage
-         */
         calibPrefs.buffer_capacity = CALIB_DURATION * preferences.samplingRate;
-
         EEGDataReceiver calibrationDataReceiver = new EEGDataReceiver();
-        calibrationDataReceiver.setFilterCallback(EEGdata -> processCalibrationData(calibrationDataReceiver));
         AsyncTask.execute(() -> {
             Log.i("Calib", "We are now collecting data for the calibration in another thread");
-            calibrationDataReceiver.prepareAndStart(calibPrefs);
-
+            calibrationDataReceiver.recordOneBuffer(calibPrefs, this::processCalibrationData);
         });
     }
 
-    private void processCalibrationData(EEGDataReceiver calibrationDataReceiver) {
-        calibrationDataReceiver.stopRunning();
-        calibData = calibrationDataReceiver.getBuffer();
+    private void processCalibrationData(SampleBuffer calibData) {
         /*
          * start calibration calculation
          */
@@ -96,8 +83,10 @@ public class CalibrationFragment extends Fragment {
         calibrationResult.status = CalibrationResult.EndStatus.SUCCEEDED;
         mListener.onCalibrationEnded(calibrationResult);
 
-        // TODO return to MainFragment
-
+        // inform user that we are done
+        // TODO set text and progress bar correctly!
+        // close CalibrationfFragment view
+        getActivity().getFragmentManager().beginTransaction().remove(this).commit();
     }
 
     @Override
