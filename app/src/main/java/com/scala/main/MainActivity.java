@@ -164,32 +164,6 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		// instantiate the template buffer object because we get a nullpointer exc. otherwise
 		templates = new SampleBuffer(1000, 2);
 
-		/*loadLeftTemplatesButton = (Button) findViewById(R.id.loadLeftTemplate);
-		loadLeftTemplatesButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				loadTemplates(0);
-				// after you loaded a template, you cannot load another one
-				loadLeftTemplatesButton.setClickable(false);
-				loadLeftTemplatesButton.setAlpha(.5f);
-			}
-		});
-
-		loadRightTemplatesButton = (Button) findViewById(R.id.loadRightTemplate);
-		loadRightTemplatesButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				loadTemplates(1);
-				// after you loaded a template, you cannot load another one
-				loadRightTemplatesButton.setClickable(false);
-				loadRightTemplatesButton.setAlpha(.5f);
-			}
-		});
-
-		loadRightTemplatesButton.setClickable(true);
-		loadLeftTemplatesButton.setClickable(true);
-        */
-
 		proceedButton = (Button) findViewById(R.id.startExperiment);
 		proceedButton.setOnClickListener(new View.OnClickListener() {
 			@Override

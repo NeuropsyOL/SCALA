@@ -230,8 +230,6 @@ public class CommunicationController {
 	
 	/**
 	 * Asynchonous listening for UDP signal in the network.
-	 * 
-	 * @param runnable
 	 */
 	public void listenforUDPpackets() {
 		try {
@@ -246,9 +244,7 @@ public class CommunicationController {
 
 	/**
 	 * Send out the decision message produced by the classifier.
-	 * 
-	 * @param String result
-	 * 				 The result of the classification.
+	 *
 	 */
 	public void sendOutDecisionUDP(ClassificationResult result) {
 		try {
