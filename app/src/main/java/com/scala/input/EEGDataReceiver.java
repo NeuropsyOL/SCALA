@@ -285,20 +285,20 @@ public boolean resolveIncomingStream() {
 		if (!(eegInlet == null)) {
 			info = eegInlet.info();
 
-			String infoText = "INFORMATION ABOUT THE INCOMING STREAM: "
-								+ "\n"
-								+ "\n Host Name: " + info.hostname()
-								+ "\n Stream Name: " + info.name()
-								+ "\n Type of Stream: " + info.type()
-								+ "\n"
-								// + "\n data format: " + info.channel_format()
-								// + "\n number of channels: " + info.channel_count()
-								+ "\n"
-								+ "\n Sampling Rate: " + info.nominal_srate()
-								+ "\n";
+			String infoText = "Info about resolved stream: "
+					+ "\n"
+					+ "\n Host Name: 		" + info.hostname()
+					+ "\n Stream Name: 		" + info.name()
+					+ "\n Type of Stream: 	" + info.type()
+					+ "\n"
+					// + "\n data format: " + info.channel_format()
+					// + "\n number of channels: " + info.channel_count()
+					+ "\n"
+					+ "\n Sampling Rate: 	" + info.nominal_srate()
+					+ "\n";
 			if (info.channel_count() > 1) {
 				infoText += 					
-					 " Channel Labels: "
+					 " Channel Labels: 		"
 						+ getChannelLabelsFromStream()[prefs.one] 
 						+ ", "
 						+ getChannelLabelsFromStream()[prefs.two]
