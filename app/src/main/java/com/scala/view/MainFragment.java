@@ -28,7 +28,6 @@ public class MainFragment extends Fragment {
 
 		View root = inflater.inflate(R.layout.main_fragment, container);
 		tv = (TextView) root.findViewById(R.id.textView1);
-
 		return root;
 	}
 
@@ -43,6 +42,7 @@ public class MainFragment extends Fragment {
 	 */
 	public void setStreamDetails(String streamInfos, double finalSample ) {
 		tv.setText(streamInfos + "\n Sample Channel Value:  " + finalSample);
+
 	}
 
 }

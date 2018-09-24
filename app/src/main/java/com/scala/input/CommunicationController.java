@@ -222,7 +222,6 @@ public class CommunicationController {
 				 * the main controller
 				 */
 				getEEGReceiver().putDataInBuffer(timestamp);
-
 			}
 		}, "PutDataInBufferThread").start();
 	}

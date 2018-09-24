@@ -15,8 +15,12 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:fontFamily="sans-serif-condensed"
         android:text="@string/textview"
-        tools:fontFamily="sans-serif-smallcaps"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:typeface="sans"
         tools:textSize="24sp" />
 
     <!--<Button
@@ -48,5 +52,6 @@
         android:gravity="bottom"
         android:text="@string/proceedButton"
         android:textStyle="bold" />
+
     <!--android:layout_above="@+id/loadLeftTemplate"-->
 </RelativeLayout>
