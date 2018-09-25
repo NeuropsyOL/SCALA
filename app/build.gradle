@@ -29,4 +29,6 @@ dependencies {
     implementation files('libs/rtandroid-20161201.jar')
     implementation files('libs/jASR.jar')
     implementation 'com.android.support:support-v4:23.4.0'
+    implementation 'com.androidplot:androidplot-core:1.5.6'
+    implementation files('libs/jna-4.2.2.jar')
 }

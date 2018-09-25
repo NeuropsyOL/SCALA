@@ -1,16 +1,15 @@
 package com.scala.input;
 
-import com.scala.filter.IEEGFilledRawDataBufferListener;
-import com.scala.tools.ScalaPreferences;
-import com.scala.tools.SampleBuffer;
-
 import android.util.Log;
-import edu.ucsd.sccn.lsl.lslAndroid;
-import edu.ucsd.sccn.lsl.stream_info;
-import edu.ucsd.sccn.lsl.stream_inlet;
-import edu.ucsd.sccn.lsl.vectord;
-import edu.ucsd.sccn.lsl.vectorinfo;
-import edu.ucsd.sccn.lsl.xml_element;
+
+import com.scala.filter.IEEGFilledRawDataBufferListener;
+import com.scala.tools.SampleBuffer;
+import com.scala.tools.ScalaPreferences;
+
+import java.io.IOException;
+
+import edu.ucsd.sccn.LSL;
+
 
 /**
  * This class is responsible for the detection of the LSL streams in the
@@ -30,31 +29,12 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 	private static final String TAG_RECEIVER = "receiver";
 
 	/**
-	 * Load the LSL library
-	 */
-	static {
-		System.loadLibrary("lslAndroid");
-	}
-
-
-	/**
-	 * The datatype for the incoming samples. For an EEG stream, the sample
-	 * datatype is from type double.
-	 */
-	private vectord eegSample;
-
-	/**
 	 * The stream inlet that is created based on the information that was
 	 * received from the stream.
 	 */
-	private stream_inlet eegInlet;
+	private LSL.StreamInlet eegInlet;
 	
-	
-	/**
-	 * The meta information that can be gathered from the incoming stream
-	 */
-	private stream_info info;
-	
+
 	/**
 	 * The channel count from the incoming stream. It is used to
 	 * determine the size of the buffer to store the data in and also the
@@ -106,7 +86,8 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 	private ScalaPreferences prefs;
 
 	private volatile boolean running = false;
-
+	private double eegSample;
+	private LSL.StreamInfo info;
 
 
 	/**
@@ -146,7 +127,12 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 	 */
 	@Override
 	public void run() {
-		boolean doneResolving = resolveIncomingStream();
+		boolean doneResolving = false;
+		try {
+			doneResolving = resolveIncomingStream();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// this is needed because of the parallel execution of all the
 		// functions concerning the stream. when starting the stream first
 		// and then SCALA, we get a null object reference in the getOneValue
@@ -174,15 +160,15 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 	 * until it found a stream.
 	 */
 	@Override
-public boolean resolveIncomingStream() {
-		vectorinfo eegStream;
-		do {
-			eegStream = lslAndroid.resolve_stream("type", "EEG");
-		} while (eegStream.isEmpty());
-		
-		final stream_info eegInfo = eegStream.get(0); 
-		this.setEEGInlet(new stream_inlet(eegInfo));	
-		
+	public boolean resolveIncomingStream() throws Exception {
+		try{
+			LSL.StreamInfo[] infos = LSL.resolve_stream("type", "EEG");
+			eegInlet = new LSL.StreamInlet(infos[0]);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		// information needed for the GUI
 		channel_count = eegInlet.info().channel_count();
 		return true;
@@ -232,22 +218,30 @@ public boolean resolveIncomingStream() {
 	 * fills up the buffer with 3 seconds of data and notifies putDataInBuffer()
 	 */
 	public void getOneValueForCallback() {
-		setEegSample(new vectord(channel_count));
-		double val = eegInlet.pull_sample(eegSample, 1.0);
-		boolean isSamples = val != 0.0;
-		
-		int channelIndex = prefs.one;
-		double exemplaryEEGSample = eegSample.get(channelIndex);
+		double[] samples = new double[channel_count];
+		try {
+			eegInlet.pull_sample(samples,0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		boolean isSamples = samples[0] != 0.0;
+		int channelIndex = prefs.one == 0 ? 2 : prefs.one;
+		double exemplaryEEGSample = samples[channelIndex];
 		if (isSamples && eegDataCallback != null)
 			eegDataCallback.handleEEGSample(exemplaryEEGSample);
 
 		if (recordingIntoBuffer) {
 			setBuffer(new SampleBuffer(prefs.buffer_capacity, channel_count));
 			while (!getBuffer().isAtFullCapacity()) {
-				double t_stream = eegInlet.pull_sample(eegSample);
+				double t_stream = 0;
+				try {
+					t_stream = eegInlet.pull_sample(samples, 0);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				// only store data which is older than the signal. 
 				if (t_stream >= this.timestamp){
-					getBuffer().insertSample(vectordToArray(eegSample));
+					getBuffer().insertSample(samples);
 				} else {
 					Log.i("EEGDataReceiver","sample was too old: " + t_stream + this.timestamp );
 				}
@@ -261,20 +255,6 @@ public boolean resolveIncomingStream() {
 	}
 
 	/**
-	 * Helper method to store the content of a vectord type sample into an array
-	 * 
-	 * @param sample the sample of the LSL library type vectord
-	 * @return a double array containing the content of the vectord sample
-	 */
-	private static double[] vectordToArray(final vectord sample) {
-		double[] result = new double[(int) sample.capacity()];
-		for (int i = 0; i < result.length; i++) {
-			result[i] = sample.get(i);
-		}
-		return result;
-	}
-
-	/**
 	 * This method is used to compose the stream information for the
 	 * MainActivity and the MainFragment.
 	 * 
@@ -283,26 +263,41 @@ public boolean resolveIncomingStream() {
 	 */
 	public String composeInfosFromStream() {
 		if (!(eegInlet == null)) {
-			info = eegInlet.info();
+			info = null;
+			try {
+				eegInlet.info();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-			String infoText = "Info about resolved stream: "
-					+ "\n"
-					+ "\n Host Name: " + info.hostname()
-					+ "\n Stream Name: " + info.name()
-					+ "\n Type of Stream: " + info.type()
-					+ "\n"
-					// + "\n data format: " + info.channel_format()
-					// + "\n number of channels: " + info.channel_count()
-					+ "\n"
-					+ "\n Sampling Rate: " + info.nominal_srate()
-					+ "\n";
-			if (info.channel_count() > 1) {
-				infoText += 					
-					 " Channel Labels: "
-						+ getChannelLabelsFromStream()[prefs.one] 
-						+ ", "
-						+ getChannelLabelsFromStream()[prefs.two]
-						+ "\n";	
+			String infoText = null;
+			try {
+				infoText = "Info about resolved stream: "
+                        + "\n"
+                        + "\n Host Name: " + eegInlet.info().hostname()
+                        + "\n Stream Name: " + eegInlet.info().name()
+                        + "\n Type of Stream: " + eegInlet.info().type()
+                        + "\n"
+                        // + "\n data format: " + info.channel_format()
+                        // + "\n number of channels: " + info.channel_count()
+                        + "\n"
+                        + "\n Sampling Rate: " + eegInlet.info().nominal_srate()
+                        + "\n";
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				if (eegInlet.info().channel_count() > 1) {
+                    infoText +=
+                         " Channel Labels: "
+                           /* + getChannelLabelsFromStream()[prefs.one]
+                            + ", "
+                            + getChannelLabelsFromStream()[prefs.two]
+                            + "\n";*/
+                           + "don't know how to get the labels so far";
+                }
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return infoText;
 			
@@ -311,27 +306,32 @@ public boolean resolveIncomingStream() {
 			return "NOINFOS";
 		}
 	}
-
-	/**
+/*
+	*//**
 	 * Read meta information from the stream
 	 * 
 	 * @return a String array containing all the channel labels
-	 */
+	 *//*
 	private String[] getChannelLabelsFromStream() {
-		String[] res = new String[info.channel_count()];
+		String[] res = new String[0];
+		try {
+			res = new String[eegInlet.info().channel_count()];
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		xml_element ch = info.desc().child("channels").child("channel");
 		for (int k = 0; k < info.channel_count(); k++) {
 			res[k] = "  " + ch.child_value("label");
 			ch = ch.next_sibling();
 		}
 		return res;
-	}
+	}*/
 
 	/**
 	 * @return the eeg_inlet which contains the information and the data from
 	 *         the resolved lsl stream
 	 */
-	public stream_inlet getEEGInlet() {
+	public LSL.StreamInlet getEEGInlet() {
 		return eegInlet;
 	}
 
@@ -339,14 +339,14 @@ public boolean resolveIncomingStream() {
 	 * @param eeg_inlet
 	 *            the eeg_inlet to set
 	 */
-	public void setEEGInlet(stream_inlet eeg_inlet) {
+	public void setEEGInlet(LSL.StreamInlet eeg_inlet) {
 		this.eegInlet = eeg_inlet;
 	}
 
 	/**
 	 * @return the eegSample
 	 */
-	public vectord getEegSample() {
+	public double getEegSample() {
 		return eegSample;
 	}
 
@@ -354,7 +354,7 @@ public boolean resolveIncomingStream() {
 	 * @param eegSample
 	 *            the eegSample to set
 	 */
-	public void setEegSample(vectord eegSample) {
+	public void setEegSample(double eegSample) {
 		this.eegSample = eegSample;
 	}
 

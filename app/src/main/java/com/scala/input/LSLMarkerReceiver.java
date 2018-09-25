@@ -1,15 +1,13 @@
 package com.scala.input;
 
-import java.util.Objects;
+import android.util.Log;
 
 import com.scala.tools.ScalaPreferences;
 import com.scala.udp.IncomingDataCallback;
 
-import android.util.Log;
-import edu.ucsd.sccn.lsl.lslAndroid;
-import edu.ucsd.sccn.lsl.stream_inlet;
-import edu.ucsd.sccn.lsl.vectorinfo;
-import edu.ucsd.sccn.lsl.vectorstr;
+import java.util.Objects;
+
+import edu.ucsd.sccn.LSL;
 
 /**
  * This class is the implementation of the IHandleIncomingData Interface which is resposible
@@ -23,7 +21,7 @@ import edu.ucsd.sccn.lsl.vectorstr;
 public class LSLMarkerReceiver implements IHandleIncomingData {
 
 	
-	private stream_inlet inlet;
+	private LSL.StreamInlet inlet;
 
 	private final IncomingDataCallback callback;
 		
@@ -45,13 +43,14 @@ public class LSLMarkerReceiver implements IHandleIncomingData {
 	 */
 	@Override
 	public boolean resolveIncomingStream() {
-		 vectorinfo results = lslAndroid.resolve_stream("type","Markers");
-		 if (!results.isEmpty()){
-			 inlet = new stream_inlet(results.get(0));
-			 return true;
-		 }
-		 // could not resolve marker streams
-		 return false;
+		 LSL.StreamInfo[] results = LSL.resolve_stream("type","Markers");
+			 try{
+			 	inlet = new LSL.StreamInlet(results[0]);
+				return true;
+			 } catch (Exception e){
+				 return false;
+			 }
+
 	}
 
 	
@@ -73,10 +72,15 @@ public class LSLMarkerReceiver implements IHandleIncomingData {
 				}
 				if (doneResolving) {
 					while (true) {
-					 	vectorstr s = new vectorstr(); 
-						 double timestamp = inlet.pull_sample(s); // wait until you get one
-						 
-						 String sample = s.get(0);
+					 	String[] s = new String[1];
+						double timestamp = 0; // wait until you get one
+						try {
+							timestamp = inlet.pull_sample(s);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+						String sample = s[0];
 						 if (sample.contains("SOUND") || sample.contains("sound")) {  // this is case-sensitive!
 							 // call the Communication Controller and tell him that we have a sound marker
 							 callback.signalResult("trigger" + sample, timestamp);

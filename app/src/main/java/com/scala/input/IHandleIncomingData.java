@@ -9,7 +9,7 @@ package com.scala.input;
  */
 public interface IHandleIncomingData {
 
-	public boolean resolveIncomingStream();
+	public boolean resolveIncomingStream() throws Exception;
 
 	public void putDataInBuffer(double timestamp);
 

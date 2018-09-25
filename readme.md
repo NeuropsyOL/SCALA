@@ -4,7 +4,7 @@ An Android application for the online signal processing and classification of ti
 It has been developed at the University of Oldenburg during my PhD. 
 
 ## Overview of data flow
-SCALA receives and sends out data using the LabstreamingLayer (https://github.com/sccn/labstreaminglayer).
+SCALA receives and sends out data using the LabstreamingLayer (https://github.com/edu.ucsd.sccn/labstreaminglayer).
 A more detailed description of its workings and the setup will follow soon.
 
 

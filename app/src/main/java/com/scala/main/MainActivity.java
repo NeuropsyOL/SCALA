@@ -1,23 +1,5 @@
 package com.scala.main;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.regex.Pattern;
-
-import com.scala.out.R;
-import com.scala.controller.MainController;
-import com.scala.input.IEEGSingleSamplesListener;
-import com.scala.tools.ScalaPreferences;
-import com.scala.tools.FileChooser;
-import com.scala.tools.SampleBuffer;
-import com.scala.view.CalibrationFragment;
-import com.scala.view.CalibrationResult;
-import com.scala.view.MainFragment;
-import com.scala.view.SettingsFragment;
-
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,6 +17,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.scala.controller.MainController;
+import com.scala.input.IEEGSingleSamplesListener;
+import com.scala.out.R;
+import com.scala.tools.FileChooser;
+import com.scala.tools.SampleBuffer;
+import com.scala.tools.ScalaPreferences;
+import com.scala.view.CalibrationFragment;
+import com.scala.view.CalibrationResult;
+import com.scala.view.MainFragment;
+import com.scala.view.SettingsFragment;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Main Activity for SCALA. This class is the view for the controllers. It is
@@ -387,6 +387,8 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 
 	private static final long TIME_BETWEEN_SAMPLES_TO_DISPLAY = 50L;
 	private volatile long lastTimeStampOfVisibleSample = 0L;
+/*	private Redrawer redrawer;
+	XYPlot plot;*/
 	/**
 	 * Implementation of the callback method for the constant visualization of
 	 * one exemplary sample from the incoming eeg stream.
@@ -397,11 +399,13 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		newestValue = eegSample;
 		if (System.currentTimeMillis() > lastTimeStampOfVisibleSample + TIME_BETWEEN_SAMPLES_TO_DISPLAY) {
 		    // set this to a high value
-		    lastTimeStampOfVisibleSample = System.currentTimeMillis()+1000;
+		   // lastTimeStampOfVisibleSample = System.currentTimeMillis()+1000;
 		    runOnUiThread(() -> {
                 mf.setStreamDetails(mainController.getStreamInfos(), newestValue);
                 // update the value only if we really showed a sample on the screen
                 lastTimeStampOfVisibleSample = System.currentTimeMillis();
+				//plot = mf.setPlotValues(mainController.getStreamInfos(),eegSample);
+				//redrawer = new Redrawer(plot, 100, true);
             });
         }
 	}
