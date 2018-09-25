@@ -387,8 +387,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 
 	private static final long TIME_BETWEEN_SAMPLES_TO_DISPLAY = 50L;
 	private volatile long lastTimeStampOfVisibleSample = 0L;
-/*	private Redrawer redrawer;
-	XYPlot plot;*/
+	SampleBuffer uiSampleBuffer = new SampleBuffer(200,1);
 	/**
 	 * Implementation of the callback method for the constant visualization of
 	 * one exemplary sample from the incoming eeg stream.
@@ -397,15 +396,15 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	@Override
 	public void handleEEGSample(double eegSample) {
 		newestValue = eegSample;
+
 		if (System.currentTimeMillis() > lastTimeStampOfVisibleSample + TIME_BETWEEN_SAMPLES_TO_DISPLAY) {
+
 		    // set this to a high value
 		   // lastTimeStampOfVisibleSample = System.currentTimeMillis()+1000;
 		    runOnUiThread(() -> {
                 mf.setStreamDetails(mainController.getStreamInfos(), newestValue);
                 // update the value only if we really showed a sample on the screen
                 lastTimeStampOfVisibleSample = System.currentTimeMillis();
-				//plot = mf.setPlotValues(mainController.getStreamInfos(),eegSample);
-				//redrawer = new Redrawer(plot, 100, true);
             });
         }
 	}

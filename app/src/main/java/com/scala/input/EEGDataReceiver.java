@@ -306,26 +306,7 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 			return "NOINFOS";
 		}
 	}
-/*
-	*//**
-	 * Read meta information from the stream
-	 * 
-	 * @return a String array containing all the channel labels
-	 *//*
-	private String[] getChannelLabelsFromStream() {
-		String[] res = new String[0];
-		try {
-			res = new String[eegInlet.info().channel_count()];
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		xml_element ch = info.desc().child("channels").child("channel");
-		for (int k = 0; k < info.channel_count(); k++) {
-			res[k] = "  " + ch.child_value("label");
-			ch = ch.next_sibling();
-		}
-		return res;
-	}*/
+
 
 	/**
 	 * @return the eeg_inlet which contains the information and the data from
