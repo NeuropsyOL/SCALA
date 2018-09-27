@@ -225,7 +225,7 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 			e.printStackTrace();
 		}
 		boolean isSamples = samples[0] != 0.0;
-		int channelIndex = prefs.one == 0 ? 2 : prefs.one;
+		int channelIndex = prefs.one == 0 ? 1 : prefs.one;
 		double exemplaryEEGSample = samples[channelIndex];
 		if (isSamples && eegDataCallback != null)
 			eegDataCallback.handleEEGSample(exemplaryEEGSample);

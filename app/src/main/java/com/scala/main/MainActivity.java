@@ -3,7 +3,6 @@ package com.scala.main;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -98,22 +97,12 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	private boolean inSettings = false;
 
 	/**
-	 * Am Android container object containing the preferences.
-	 */
-	private SharedPreferences prefs;
-
-	/**
 	 * My preferences object. This object
 	 * contains all the settings from the shared preferences object and should
 	 * be used throughout the rest of the app to prevent an Android dependency
 	 * of the single classes.
 	 */
 	private ScalaPreferences scalaPrefs;
-
-	/**
-	 * The editor for the storage of the settings.
-	 */
-	private Editor editor;
 
 
 	/**
@@ -138,22 +127,13 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	 */
 	private SampleBuffer templates;
 
-	 /**
-	  * Information that is needed for the loading and parsing of the template file
-	  */
+	/**
+	 * Information that is needed for the loading and parsing of the template file
+	 */
 	private static final Pattern COMMA_OR_NEWLINE_DELIMITER = Pattern.compile("[,\\n\\r]"); //(, | \s)
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
-	private Button loadRightTemplatesButton;
-
-	private Button loadLeftTemplatesButton;
-
 	private Button proceedButton;
-
-	/**
-	 * Needed to keep the CPU active when SCALA is in the background
-	 */
-	private WakeLock wakeLock;
 
 
 	@Override
@@ -165,58 +145,45 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		templates = new SampleBuffer(1000, 2);
 
 		proceedButton = (Button) findViewById(R.id.startExperiment);
-		proceedButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-                // you shall not update the preferences again
-                proceedButton.setClickable(false);
-                proceedButton.setAlpha(.5f);
-                updatePreferences();
-                if (mainController == null) {
-                    mainController = new MainController(scalaPrefs);
-                    mainController.prepare();
-                    mainController.setDiagnosticSampleReceiver(MainActivity.this);
-                }
-                CharSequence text = "Preferences have been updated.";
-                int duration = Toast.LENGTH_LONG;
-                Toast t = Toast.makeText(getApplicationContext(), text, duration);
-                t.show();
-                //loadRightTemplatesButton.setClickable(true);
-                //loadLeftTemplatesButton.setClickable(true);
-	            // when we loaded templates, hand them over to the Main Controller
-//	            if (!scalaPrefs.isTemplateGeneration) {
-//	            	mainController.setTemplateBuffer(templates);
-//	            	Log.i("File", "template buffer has been passed to MainController");
-//	            }
-
-	            if (scalaPrefs.checkArtifacts){
-	                // the button now delegates to the calibration activity where it collects calibration data
-                    CalibrationFragment calibrationFragment = new CalibrationFragment();
-                    calibrationFragment.setOriginalPreferences(scalaPrefs);
-                    switchFragment(R.id.fragment1, calibrationFragment);
-                }
+		assert proceedButton != null;
+		proceedButton.setOnClickListener(v -> {
+			// you shall not update the preferences again
+			proceedButton.setClickable(false);
+			proceedButton.setAlpha(.5f);
+			updatePreferences();
+			if (mainController == null) {
+				mainController = new MainController(scalaPrefs);
+				mainController.prepare();
+				mainController.setDiagnosticSampleReceiver(MainActivity.this);
+			}
+			CharSequence text = "Preferences have been updated.";
+			int duration = Toast.LENGTH_LONG;
+			Toast t = Toast.makeText(getApplicationContext(), text, duration);
+			t.show();
+			if (scalaPrefs.checkArtifacts){
+				// the button now delegates to the calibration activity where it collects calibration data
+				CalibrationFragment calibrationFragment = new CalibrationFragment();
+				calibrationFragment.setOriginalPreferences(scalaPrefs);
+				switchFragment(R.id.fragment1, calibrationFragment);
 			}
 		});
 
 
-		/*
-		Keep SCALA active when it's running in the background.
-		 */
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag");
+		assert powerManager != null;
+		WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SCALA:MyWakelockTag");
 		wakeLock.acquire();
-
 	}
 
-    private void switchFragment(int fragmentId, Fragment sf) {
-        getFragmentManager()
-                .beginTransaction()
-                .replace(fragmentId, sf)
-                .addToBackStack(null)
-                .commit();
-    }
+	private void switchFragment(int fragmentId, Fragment sf) {
+		getFragmentManager()
+				.beginTransaction()
+				.replace(fragmentId, sf)
+				.addToBackStack(null)
+				.commit();
+	}
 
-    /**
+	/**
 	 * Method which is called, when the user presses one of the buttons
 	 * to load a template.
 	 *
@@ -226,23 +193,23 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	 */
 	private void loadTemplates(final int idx) {
 		FileChooser filechooser = new FileChooser(this);
-	    filechooser.setFileListener(new FileChooser.FileSelectedListener() {
+		filechooser.setFileListener(new FileChooser.FileSelectedListener() {
 
 			@Override
-	        public void fileSelected(final File file) {
-	            String filename = file.getAbsolutePath();
-	            Log.i("Loaded Template: ", filename);
-	            //Read content from file
-	            double[] val = readDoublesFromFile(filename, DEFAULT_CHARSET_NAME); // make sample buffer with this length!
-	            if (templates == null) {
-	            	templates = new SampleBuffer(val.length, 2);
-	            }
-	            templates.insertChannelData(idx, val);
-	        }
-	    });
-	// Set up and filter my extension I am looking for in the file dialog
-	    filechooser.setExtension("csv");
-	    filechooser.showDialog();
+			public void fileSelected(final File file) {
+				String filename = file.getAbsolutePath();
+				Log.i("Loaded Template: ", filename);
+				//Read content from file
+				double[] val = readDoublesFromFile(filename, DEFAULT_CHARSET_NAME); // make sample buffer with this length!
+				if (templates == null) {
+					templates = new SampleBuffer(val.length, 2);
+				}
+				templates.insertChannelData(idx, val);
+			}
+		});
+		// Set up and filter my extension I am looking for in the file dialog
+		filechooser.setExtension("csv");
+		filechooser.showDialog();
 	}
 
 
@@ -280,7 +247,10 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	 */
 	private void updatePreferences() {
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, READ_AGAIN);
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		/*
+	 	 * Am Android container object containing the preferences.
+		 */
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		scalaPrefs = new ScalaPreferences();
 		scalaPrefs.filterType = prefs.getString("pref_filters","Bandpass");
 		scalaPrefs.samplingRate = Integer.parseInt(prefs.getString("pref_sr", "250"));
@@ -298,16 +268,10 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		scalaPrefs.saveTemplate = prefs.getBoolean("saveTemplates", false);
 		scalaPrefs.subjectName = prefs.getString("subjectName", "subj_00");
 		scalaPrefs.checkArtifacts = prefs.getBoolean("checkArtifacts", false);
-
 		Log.i(LSLSTREAM_TAG, "chosen settings are: " + prefs.getAll() );
 	}
 
-	/**
-	 * ------------------------------------------------------------------------
-	 * View functionality.
-	 */
 
-	
 	@Override
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
 		View view = super.onCreateView(name, context, attrs);
@@ -325,23 +289,17 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.action_settings:
-			inSettings = true;
-            switchFragment(R.id.fragment1, new SettingsFragment());
-			// hide the buttons
-			//loadRightTemplatesButton.setVisibility(View.INVISIBLE);
-			//loadRightTemplatesButton.setClickable(false);
-			//loadLeftTemplatesButton.setVisibility(View.INVISIBLE);
-			//loadLeftTemplatesButton.setClickable(false);
-			proceedButton.setVisibility(View.INVISIBLE);
-			proceedButton.setClickable(false);
-					
-			return true;
-		default:
-			// If we got here, the user's action was not recognized.
-			// Invoke the superclass to handle it.
-			return super.onOptionsItemSelected(item);
+			case R.id.action_settings:
+				inSettings = true;
+				switchFragment(R.id.fragment1, new SettingsFragment());
+				proceedButton.setVisibility(View.INVISIBLE);
+				proceedButton.setClickable(false);
 
+				return true;
+			default:
+				// If we got here, the user's action was not recognized.
+				// Invoke the superclass to handle it.
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -353,18 +311,18 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	@Override
 	public void onBackPressed() {
 		if (inSettings) {
-		    updatePreferences();
-            /*
-             * prepare() calls makeFilter() which produces a filter object based on
-             * the settings. Additionally, the MainController gets objects from the
-             * receiving classes and the InputController and starts the UDP
-             * listening thread.
-             */
-            if (mainController == null) {
-                mainController = new MainController(scalaPrefs);
-                mainController.prepare();
-                mainController.setDiagnosticSampleReceiver(MainActivity.this);
-            }
+			updatePreferences();
+			/*
+			 * prepare() calls makeFilter() which produces a filter object based on
+			 * the settings. Additionally, the MainController gets objects from the
+			 * receiving classes and the InputController and starts the UDP
+			 * listening thread.
+			 */
+			if (mainController == null) {
+				mainController = new MainController(scalaPrefs);
+				mainController.prepare();
+				mainController.setDiagnosticSampleReceiver(MainActivity.this);
+			}
 			backFromSettingsFragment();
 			return;
 		}
@@ -374,48 +332,39 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	private void backFromSettingsFragment() {
 		inSettings = false;
 		getFragmentManager().popBackStack();
-		// make the buttons visible again
-		//loadRightTemplatesButton.setVisibility(View.VISIBLE);
-		//loadLeftTemplatesButton.setVisibility(View.VISIBLE);
-		//loadLeftTemplatesButton.setClickable(true);
-		//loadRightTemplatesButton.setClickable(true);
 		int proceedButtonText = scalaPrefs.checkArtifacts ? R.string.proceedButtonCalib : R.string.proceedButton;
-        proceedButton.setText(proceedButtonText);
+		proceedButton.setText(proceedButtonText);
 		proceedButton.setVisibility(View.VISIBLE);
 		proceedButton.setClickable(true);
 	}
 
-	private static final long TIME_BETWEEN_SAMPLES_TO_DISPLAY = 50L;
-	private volatile long lastTimeStampOfVisibleSample = 0L;
-	SampleBuffer uiSampleBuffer = new SampleBuffer(200,1);
 	/**
 	 * Implementation of the callback method for the constant visualization of
 	 * one exemplary sample from the incoming eeg stream.
-     * We added a restriction for the actual display of the exemplary sample so that the UI stays responsive
+	 * We added a restriction for the actual display of the exemplary sample so that the UI stays responsive
+	 * This callback hands over one sample to the MainFragment class which is also displaying the AndroidPlot
 	 */
+	private static final long TIME_BETWEEN_SAMPLES_TO_DISPLAY = 50L;
+	private volatile long lastTimeStampOfVisibleSample = 0L;
 	@Override
 	public void handleEEGSample(double eegSample) {
 		newestValue = eegSample;
-
 		if (System.currentTimeMillis() > lastTimeStampOfVisibleSample + TIME_BETWEEN_SAMPLES_TO_DISPLAY) {
-
-		    // set this to a high value
-		   // lastTimeStampOfVisibleSample = System.currentTimeMillis()+1000;
-		    runOnUiThread(() -> {
-                mf.setStreamDetails(mainController.getStreamInfos(), newestValue);
-                // update the value only if we really showed a sample on the screen
-                lastTimeStampOfVisibleSample = System.currentTimeMillis();
-            });
-        }
+			runOnUiThread(() -> {
+				mf.setStreamDetails(mainController.getStreamInfos(), newestValue);
+				// update the value only if we really showed a sample on the screen
+				lastTimeStampOfVisibleSample = System.currentTimeMillis();
+			});
+		}
 	}
 
 
 	/**
 	 * Receive data from the Calibration Fragment as soon as the calibration is finished.
 	 */
-    @Override
-    public void onCalibrationEnded(CalibrationResult calibRes) {
-        // hand over to the mainController or something else which is good
+	@Override
+	public void onCalibrationEnded(CalibrationResult calibRes) {
+		// hand over to the mainController or something else which is good
 		mainController.setup_jASR(calibRes);
-    }
+	}
 }

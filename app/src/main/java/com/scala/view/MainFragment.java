@@ -1,5 +1,7 @@
 package com.scala.view;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,14 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.androidplot.util.PixelUtils;
 import com.androidplot.util.Redrawer;
 import com.androidplot.xy.AdvancedLineAndPointRenderer;
+import com.androidplot.xy.FastLineAndPointRenderer;
 import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.scala.out.R;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The Main Fragment corresponding to the MainActivity of the APP which is the 
@@ -30,7 +36,7 @@ public class MainFragment extends Fragment {
 
 	private TextView tv;
 	private XYPlot plot;
-	private MyFadeFormatter eegSeriesFormat;
+	private FastLineAndPointRenderer.Formatter eegFormatter;
 	private SimpleXYSeries eegSeries;
 	private Redrawer redrawer;
 	private Thread myThread;
@@ -40,21 +46,44 @@ public class MainFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// set up view, text field and plot
 		View root = inflater.inflate(R.layout.main_fragment, container);
 		tv = (TextView) root.findViewById(R.id.textView1);
 		plot = (XYPlot) root.findViewById(R.id.plot);
 
+		// This is critical for being able to set the color of the plot
+		PixelUtils.init(getContext());
 		plotSampleSource = new SampleDynamicSeries();
-		eegSeriesFormat =  new MyFadeFormatter(1000);
+		//eegFormatter =  new MyFadeFormatter(1000);
+		int LINE_COLOUR = Color.rgb(20, 20, 20);
+		eegFormatter = new FastLineAndPointRenderer.Formatter(LINE_COLOUR, null,  null);
+		//eegFormatter.setLegendIconEnabled(false);
+		eegFormatter.getLinePaint().setStrokeWidth(3);
+		plot.addSeries(plotSampleSource, eegFormatter);
 
-		double initialValue = 0.0;
-		//eegSeries = new SimpleXYSeries(Arrays.asList(initialValue), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
-		eegSeriesFormat.setLegendIconEnabled(false);
-		plot.addSeries(plotSampleSource, eegSeriesFormat);
 		AdvancedLineAndPointRenderer renderer = plot.getRenderer(AdvancedLineAndPointRenderer.class);
 		plotSampleSource.setRenderer(renderer);
 
-		redrawer = new Redrawer(plot, 30, true);
+		plot.setLinesPerRangeLabel(3);
+        plot.getBorderPaint().setColor(Color.WHITE);
+
+        XYGraphWidget graph = plot.getGraph();
+        graph.getBackgroundPaint().setColor(Color.WHITE);
+        graph.getGridBackgroundPaint().setColor(Color.TRANSPARENT);
+        graph.getDomainGridLinePaint().setColor(Color.TRANSPARENT);
+        graph.getDomainOriginLinePaint().setColor(Color.TRANSPARENT);
+        graph.getRangeGridLinePaint().setColor(Color.TRANSPARENT);
+        graph.getRangeOriginLinePaint().setColor(Color.TRANSPARENT);
+
+        // Domain = X; Range = Y
+        plot.setDomainLabel(null);
+        plot.setRangeLabel(null);
+
+        plot.getLayoutManager().remove(plot.getLegend());
+		plot.getLayoutManager().remove(plot.getBounds());
+		plot.getLayoutManager().remove(plot.getLinesPerRangeLabel());
+		plot.getBorderPaint().setColor(Color.WHITE);
+		redrawer = new Redrawer(plot, 10, true);
 		return root;
 	}
 
@@ -67,6 +96,7 @@ public class MainFragment extends Fragment {
 	 * 		One sample from one channel to indicate that the stream is still delivering samples.
 	 *
 	 */
+	@SuppressLint("SetTextI18n")
 	public void setStreamDetails(String streamInfos, double finalSample ) {
 		tv.setText(streamInfos + "\n Sample Channel Value:  " + finalSample);
 		sampleForUI = finalSample;
@@ -81,20 +111,21 @@ public class MainFragment extends Fragment {
 
 		private int trailSize;
 
-		public MyFadeFormatter(int trailSize) {
+		private MyFadeFormatter(int trailSize) {
 			this.trailSize = trailSize;
 		}
 
+		/*
+		This formatter shows the line fading for old samples.
+		 */
 		@Override
 		public Paint getLinePaint(int thisIndex, int latestIndex, int seriesSize) {
-			// offset from the latest index:
 			int offset;
 			if (thisIndex > latestIndex) {
 				offset = latestIndex + (seriesSize - thisIndex);
 			} else {
 				offset = latestIndex - thisIndex;
 			}
-
 			float scale = 255f / trailSize;
 			int alpha = (int) (255 - (offset * scale));
 			getLinePaint().setAlpha(alpha > 0 ? alpha : 0);
@@ -107,6 +138,10 @@ public class MainFragment extends Fragment {
 
 		private final Double[] data;
 		private int latestIndex;
+		/*
+		 * A weak reference serves as an information to the garbage collector to leave this object and not
+		 * garbage-collect it.
+		 */
 		private WeakReference<AdvancedLineAndPointRenderer> rendererRef;
 
 		public SampleDynamicSeries() {
@@ -122,8 +157,6 @@ public class MainFragment extends Fragment {
 			}
 			data[latestIndex] = newestSample;
 			if (latestIndex < data.length - 1) {
-				// null out the point immediately following i, to disable
-				// connecting i and i+1 with a line:
 				data[latestIndex + 1] = null;
 			}
 			AdvancedLineAndPointRenderer rend = rendererRef.get();
