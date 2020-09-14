@@ -1,18 +1,18 @@
 package com.scala.input;
 
-import java.net.SocketException;
-import java.net.UnknownHostException;
-
 import com.scala.classifier.ClassificationResult;
 import com.scala.controller.MainController;
 import com.scala.filter.IEEGFilledRawDataBufferListener;
-import com.scala.tools.ScalaPreferences;
 import com.scala.tools.FileWriterScala;
 import com.scala.tools.SampleBuffer;
+import com.scala.tools.ScalaPreferences;
 import com.scala.udp.IncomingDataCallback;
 import com.scala.udp.TCPTemplateSender;
 import com.scala.udp.UDPListener;
 import com.scala.udp.UDPSender;
+
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * This is the controlling instance for incoming data from UDP and TCP protocols.
@@ -346,7 +346,7 @@ public class CommunicationController {
 		return streamInfos;
 	}
 
-	public String getInfosFromStreamForGui() {
+	public String getInfosFromStreamForGui() throws Exception {
 		return streamInfos = eegDataReceiver.composeInfosFromStream();
 	}
 

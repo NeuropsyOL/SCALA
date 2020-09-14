@@ -1,13 +1,12 @@
 package com.scala.classifier;
 
-import java.util.Arrays;
+import android.util.Log;
+
+import com.scala.tools.SampleBuffer;
+import com.scala.tools.ScalaPreferences;
 
 import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
-
-import com.scala.tools.ScalaPreferences;
-import com.scala.tools.SampleBuffer;
-
-import android.util.Log;
+import java.util.Arrays;
 
 /**
  * The Template Matcher is the concrete implementation of any possible

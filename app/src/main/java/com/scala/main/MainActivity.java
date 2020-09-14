@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		});
 
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag");
+		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SCALA:WakeLog");
 		wakeLock.acquire();
 
 	}

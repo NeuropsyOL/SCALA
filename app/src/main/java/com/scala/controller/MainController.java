@@ -1,5 +1,7 @@
 package com.scala.controller;
 
+import android.util.Log;
+
 import com.scala.classifier.ClassificationResult;
 import com.scala.classifier.CrossCorrMatcher;
 import com.scala.classifier.TemplateCreater;
@@ -8,11 +10,9 @@ import com.scala.filter.BandpassFilter;
 import com.scala.filter.IdentityFilter;
 import com.scala.input.CommunicationController;
 import com.scala.input.IEEGSingleSamplesListener;
-import com.scala.tools.ScalaPreferences;
 import com.scala.tools.FileWriterScala;
 import com.scala.tools.SampleBuffer;
-
-import android.util.Log;
+import com.scala.tools.ScalaPreferences;
 
 /**
  * The Main Controller is receiving raw EEG data in the sampleBuffer and UDP
@@ -180,8 +180,18 @@ public class MainController {
 		 */
 		new Thread() {
 			public void run() {
-				while (communicationController.getInfosFromStreamForGui().equalsIgnoreCase("NOINFOS")) {
-					communicationController.getInfosFromStreamForGui();
+				while (true) {
+					try {
+						if (!communicationController.getInfosFromStreamForGui().equalsIgnoreCase("NOINFOS"))
+							break;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					try {
+						communicationController.getInfosFromStreamForGui();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}.start();

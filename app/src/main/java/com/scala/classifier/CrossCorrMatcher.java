@@ -2,11 +2,11 @@ package com.scala.classifier;
 
 
 
-import java.util.Arrays;
-
-import com.scala.tools.ScalaPreferences;
 import com.scala.tools.SampleBuffer;
+import com.scala.tools.ScalaPreferences;
 import com.scala.tools.XCorrMeap;
+
+import java.util.Arrays;
 
 
 public class CrossCorrMatcher implements IClassifier{
@@ -92,7 +92,7 @@ public class CrossCorrMatcher implements IClassifier{
 	 *  The first entry in the return array contains the index at which the correlation was max
 	 *  The second entry contains the amount of correlation
 	 *  
-	 * @param the array containing the output of the xcorr function
+	 * @param array containing the output of the xcorr function
 	 * @return an array containing two entries:
 	 * 			[0] the sample index at which the correlation was highest
 	 * 			[1] the highest amount of correlation

@@ -2,7 +2,6 @@ package com.scala.view;
 
 import com.scala.out.R;
 
-import edu.ucsd.sccn.lsl.stream_info;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
