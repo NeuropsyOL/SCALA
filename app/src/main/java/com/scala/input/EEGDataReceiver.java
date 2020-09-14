@@ -42,7 +42,7 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 	/**
 	 * The meta information that can be gathered from the incoming stream
 	 */
-	private LSL.StreamInfo info;
+	private LSL.StreamInfo[] info;
 	
 	/**
 	 * The channel count from the incoming stream. It is used to
@@ -151,10 +151,10 @@ public class EEGDataReceiver implements Runnable, IHandleIncomingData {
 	@Override
 public boolean resolveIncomingStream() throws Exception {
 		System.out.println("Resolving an EEG stream...");
-		LSL.StreamInfo[] results = LSL.resolve_stream("type","EEG");
+		info = LSL.resolve_stream("type","EEG");
 
 		// open an inlet
-		LSL.StreamInlet eegInlet = new LSL.StreamInlet(results[0]);
+		eegInlet = new LSL.StreamInlet(info[0]);
 
 		// information needed for the GUI
 		channel_count = eegInlet.info().channel_count();
@@ -209,7 +209,8 @@ public boolean resolveIncomingStream() throws Exception {
 		setEegSample(new double[channel_count]);
 		double val = eegInlet.pull_sample(eegSample, 1.0);
 		boolean isSamples = val != 0.0;
-		
+
+		//TODO change to preferences selection again
 		int channelIndex = prefs.one;
 		double exemplaryEEGSample = eegSample[channelIndex];
 		if (isSamples && eegDataCallback != null)
@@ -243,27 +244,27 @@ public boolean resolveIncomingStream() throws Exception {
 	 */
 	public String composeInfosFromStream() throws Exception {
 		if (!(eegInlet == null)) {
-			info = eegInlet.info();
+			LSL.StreamInfo infoForGUI = eegInlet.info();
 
 			String infoText = "INFORMATION ABOUT THE INCOMING STREAM: "
 								+ "\n"
-								+ "\n Host Name: " + info.hostname()
-								+ "\n Stream Name: " + info.name()
-								+ "\n Type of Stream: " + info.type()
+								+ "\n Host Name: " + infoForGUI.hostname()
+								+ "\n Stream Name: " + infoForGUI.name()
+								+ "\n Type of Stream: " + infoForGUI.type()
 								+ "\n"
 								// + "\n data format: " + info.channel_format()
 								// + "\n number of channels: " + info.channel_count()
 								+ "\n"
-								+ "\n Sampling Rate: " + info.nominal_srate()
+								+ "\n Sampling Rate: " + infoForGUI.nominal_srate()
 								+ "\n";
-			if (info.channel_count() > 1) {
-				infoText += 					
-					 " Channel Labels: "
-						+ getChannelLabelsFromStream()[prefs.one] 
-						+ ", "
-						+ getChannelLabelsFromStream()[prefs.two]
-						+ "\n";	
-			}
+//			if (info.channel_count() > 1) {
+//				infoText +=
+//					 " Channel Labels: "
+//						+ getChannelLabelsFromStream()[prefs.one]
+//						+ ", "
+//						+ getChannelLabelsFromStream()[prefs.two]
+//						+ "\n";
+//			}
 			return infoText;
 			
 		} else {
@@ -272,11 +273,11 @@ public boolean resolveIncomingStream() throws Exception {
 		}
 	}
 
-	/**
+/*	*//**
 	 * Read meta information from the stream
 	 * 
 	 * @return a String array containing all the channel labels
-	 */
+	 *//*
 	private String[] getChannelLabelsFromStream() {
 		String[] res = new String[info.channel_count()];
 		LSL.XMLElement ch = info.desc().child("channels").child("channel");
@@ -285,7 +286,7 @@ public boolean resolveIncomingStream() throws Exception {
 			ch = ch.next_sibling();
 		}
 		return res;
-	}
+	}*/
 
 	/**
 	 * @param eegSample

@@ -1,21 +1,5 @@
 package com.scala.main;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.regex.Pattern;
-
-import com.scala.out.R;
-import com.scala.controller.MainController;
-import com.scala.input.IEEGSingleSamplesListener;
-import com.scala.tools.ScalaPreferences;
-import com.scala.tools.FileChooser;
-import com.scala.tools.SampleBuffer;
-import com.scala.view.MainFragment;
-import com.scala.view.SettingsFragment;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -32,6 +16,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.scala.controller.MainController;
+import com.scala.input.IEEGSingleSamplesListener;
+import com.scala.out.R;
+import com.scala.tools.FileChooser;
+import com.scala.tools.SampleBuffer;
+import com.scala.tools.ScalaPreferences;
+import com.scala.view.MainFragment;
+import com.scala.view.SettingsFragment;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * Main Activity for SCALA. This class is the view for the controllers. It is
@@ -297,8 +297,8 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		clapPrefs.sendUDPmessages = prefs.getBoolean("sendUDPmessages", false);
 		clapPrefs.sendTemplates = prefs.getBoolean("sendTemplates", false);
 
-		clapPrefs.one = Integer.parseInt(prefs.getString("one","9"));
-		clapPrefs.two = Integer.parseInt(prefs.getString("two","8"));
+		clapPrefs.one = Integer.parseInt(prefs.getString("one","1"));
+		clapPrefs.two = Integer.parseInt(prefs.getString("two","2"));
 		clapPrefs.one -= 1;
 		clapPrefs.two -= 1;
 
