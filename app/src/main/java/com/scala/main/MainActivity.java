@@ -30,11 +30,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * Main Activity for SCALA. This class is the view for the controllers. It is
+ * Main Activity for SCALA. This class creates the view for the controllers. It is
  * also the main entry point for the whole application. This class is called at
  * the start of the app and the control flow for every aspect of the app begins
  * here.
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 
 
 	/*
-	 * SCALA gets a signal from PM 500ms before the sound will be played. CLAP then stores
+	 * SCALA gets a signal from PM 500ms before the sound will be played. SCALA then stores
 	 * 4 seconds of data for the classification
 	 */
 	private static final int WINDOW_WIDTH = 3; // seconds for the eeg data buffer
@@ -93,11 +94,6 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	 * the state which determines the behaviour of the back button.
 	 */
 	private boolean inSettings = false;
-
-	/**
-	 * Am Android container object containing the preferences.
-	 */
-	private SharedPreferences prefs;
 
 	/**
 	 * My preferences object. This object
@@ -142,15 +138,8 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
 	private Button loadRightTemplates;
-
 	private Button loadLeftTemplates;
-
 	private Button startExperiment;
-
-	/**
-	 * Needed to keep the CPU active when CLAP is in the background
-	 */
-	private WakeLock wakeLock;
 
 
 	@Override
@@ -163,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 
 
 		loadLeftTemplates = (Button) findViewById(R.id.loadLeftTemplate);
+		loadLeftTemplates.setVisibility(View.INVISIBLE);
 		loadLeftTemplates.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -174,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		});
 
 		loadRightTemplates = (Button) findViewById(R.id.loadRightTemplate);
+		loadRightTemplates.setVisibility(View.INVISIBLE);
 		loadRightTemplates.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -211,7 +202,10 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		});
 
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-		wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SCALA:WakeLog");
+		/**
+		 * Needed to keep the CPU active when SCALA is in the background
+		 */
+		WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SCALA:WakeLog");
 		wakeLock.acquire();
 
 	}
@@ -284,28 +278,31 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	private void handlePreferences() {
 		// set default values for preferences
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, READ_AGAIN);
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		/**
+		 * Am Android container object containing the preferences.
+		 */
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
 		clapPrefs = new ScalaPreferences();
 		clapPrefs.filterType = prefs.getString("pref_filters","Bandpass");
-		clapPrefs.samplingRate = Integer.parseInt(prefs.getString("pref_sr", "250"));
+		clapPrefs.samplingRate = Integer.parseInt(Objects.requireNonNull(prefs.getString("pref_sr", "250")));
 		clapPrefs.buffer_capacity = WINDOW_WIDTH * clapPrefs.samplingRate;
-		clapPrefs.howManyTrialsForTemplateGen = Integer.parseInt(prefs.getString("pref_trials", "10"));
+		clapPrefs.howManyTrialsForTemplateGen = Integer.parseInt(Objects.requireNonNull(prefs.getString("pref_trials", "10")));
 		if (clapPrefs.howManyTrialsForTemplateGen == 0){
 			clapPrefs.isTemplateGeneration = false;
 		}
 		clapPrefs.sendUDPmessages = prefs.getBoolean("sendUDPmessages", false);
 		clapPrefs.sendTemplates = prefs.getBoolean("sendTemplates", false);
 
-		clapPrefs.one = Integer.parseInt(prefs.getString("one","2"));
-		clapPrefs.two = Integer.parseInt(prefs.getString("two","3"));
+		clapPrefs.one = Integer.parseInt(Objects.requireNonNull(prefs.getString("one", "2")));
+		clapPrefs.two = Integer.parseInt(Objects.requireNonNull(prefs.getString("two", "3")));
 		clapPrefs.one -= 1;
 		clapPrefs.two -= 1;
 
 		clapPrefs.saveTemplate = prefs.getBoolean("saveTemplates", false);
 		clapPrefs.subjectName = prefs.getString("subjectName", "subj_00");
 		clapPrefs.checkArtefacts = prefs.getBoolean("checkArtefacts", false);
-		clapPrefs.threshold = Double.parseDouble(prefs.getString("threshold", "0.0"));
+		clapPrefs.threshold = Double.parseDouble(Objects.requireNonNull(prefs.getString("threshold", "0.0")));
 
 		Log.i(LSLSTREAM_TAG, "chosen settings are: " + prefs.getAll() );
 
@@ -388,8 +385,8 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		inSettings = false;
 		getFragmentManager().popBackStack();
 		// make the buttons visible again
-		loadRightTemplates.setVisibility(View.VISIBLE);
-		loadLeftTemplates.setVisibility(View.VISIBLE);
+		loadRightTemplates.setVisibility(View.INVISIBLE);
+		loadLeftTemplates.setVisibility(View.INVISIBLE);
 		loadLeftTemplates.setClickable(true);
 		loadRightTemplates.setClickable(true);
 		startExperiment.setVisibility(View.VISIBLE);
