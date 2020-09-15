@@ -1,0 +1,6 @@
+ninja: Entering directory `C:\Users\sarah\Documents\PhD\SCALA\app\.cxx\cmake\debug\mips'
+[0/1] Re-running CMake...
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/sarah/Documents/PhD/SCALA/app/.cxx/cmake/debug/mips
+ninja: no work to do.

@@ -297,8 +297,8 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		clapPrefs.sendUDPmessages = prefs.getBoolean("sendUDPmessages", false);
 		clapPrefs.sendTemplates = prefs.getBoolean("sendTemplates", false);
 
-		clapPrefs.one = Integer.parseInt(prefs.getString("one","1"));
-		clapPrefs.two = Integer.parseInt(prefs.getString("two","2"));
+		clapPrefs.one = Integer.parseInt(prefs.getString("one","2"));
+		clapPrefs.two = Integer.parseInt(prefs.getString("two","3"));
 		clapPrefs.one -= 1;
 		clapPrefs.two -= 1;
 

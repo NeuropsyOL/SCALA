@@ -1,0 +1,441 @@
+{
+  "stringTable": {
+    "0": "C:/Users/sarah/Documents/PhD/SCALA/app/.cxx/cmake/debug/armeabi",
+    "1": "--target=armv5te-none-linux-androideabi --gcc-toolchain=C:/Users/sarah/AppData/Local/Android/Sdk/ndk/android-ndk-r14b/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64 --sysroot=C:/Users/sarah/AppData/Local/Android/Sdk/ndk/android-ndk-r14b/platforms/android-24/arch-arm -Dlsl_EXPORTS -I../../../../../liblsl/external -isystem C:/Users/sarah/AppData/Local/Android/Sdk/ndk/android-ndk-r14b/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem C:/Users/sarah/AppData/Local/Android/Sdk/ndk/android-ndk-r14b/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi/include -isystem C:/Users/sarah/AppData/Local/Android/Sdk/ndk/android-ndk-r14b/sources/cxx-stl/gnu-libstdc++/4.9/include/backward -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -march=armv5te -mtune=xscale -msoft-float -fno-integrated-as -mthumb -Wa,--noexecstack -Wformat -Werror=format-security -std=c++11 -frtti -fexceptions -O0 -fno-limit-debug-info -fPIC"
+  },
+  "buildFiles": [
+    "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\ndk\\android-ndk-r14b\\build\\cmake\\android.toolchain.cmake",
+    "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\sarah\\Documents\\PhD\\SCALA\\app\\.cxx\\cmake\\debug\\armeabi\" clean"
+  ],
+  "buildTargetsCommand": "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"C:\\Users\\sarah\\Documents\\PhD\\SCALA\\app\\.cxx\\cmake\\debug\\armeabi\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "lsl-Debug-armeabi": {
+      "buildCommand": "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\sarah\\Documents\\PhD\\SCALA\\app\\.cxx\\cmake\\debug\\armeabi\" lsl",
+      "buildType": "debug",
+      "toolchain": "103755156",
+      "abi": "armeabi",
+      "artifactName": "lsl",
+      "files": [
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\api_config.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\common.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\consumer_queue.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\data_receiver.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\dllmain.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\generate_xdf.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\info_receiver.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\inlet_connection.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\legacy\\legacy_abi.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\lsl_continuous_resolver_c.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\lsl_freefuncs_c.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\lsl_inlet_c.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\lsl_outlet_c.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\lsl_streaminfo_c.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\lsl_xml_element_c.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\pugixml\\pugixml.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\resolve_attempt_udp.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\resolver_impl.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\sample.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\send_buffer.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\socket_utils.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\stream_info_impl.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\stream_outlet_impl.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\tcp_server.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\time_postprocessor.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\time_receiver.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\udp_server.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\xdfwriter.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\codecvt_error_category.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\operations.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\path.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\path_traits.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\portability.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\unique_path.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\utf8_codecvt_facet.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\windows_file_codecvt.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\thread\\src\\pthread\\once.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\thread\\src\\pthread\\once_atomic.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\thread\\src\\pthread\\thread.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\thread\\src\\tss_null.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\system\\src\\error_code.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\chrono\\src\\chrono.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\archive_exception.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\basic_archive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\basic_iarchive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\basic_iserializer.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\basic_oarchive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\basic_oserializer.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\basic_pointer_iserializer.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\basic_pointer_oserializer.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\basic_serializer_map.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\binary_iarchive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\binary_oarchive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\binary_wiarchive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\binary_woarchive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\codecvt_null.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\extended_type_info.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\extended_type_info_no_rtti.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\extended_type_info_typeid.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\polymorphic_iarchive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\polymorphic_oarchive.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\shared_ptr_helper.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\stl_port.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\utf8_codecvt_facet.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "src": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\serialization\\src\\void_cast.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "headers": [
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\endian\\conversion.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\endian\\detail\\intrinsic.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\portable_archive\\portable_archive_exception.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\portable_archive\\portable_iarchive.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\portable_archive\\portable_oarchive.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\pugixml\\pugiconfig.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\src\\pugixml\\pugixml.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\filesystem\\config.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\filesystem\\convenience.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\filesystem\\detail\\utf8_codecvt_facet.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\filesystem\\exception.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\filesystem\\fstream.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\filesystem\\operations.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\filesystem\\path.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\filesystem\\path_traits.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\filesystem\\src\\windows_file_codecvt.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\thread\\pthread\\once_atomic.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\lslboost\\thread\\pthread\\once.hpp",
+          "workingDirectoryOrdinal": 0
+        },
+        {
+          "header": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\liblsl\\external\\src\\system\\src\\local_free_on_destruction.hpp",
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "output": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\app\\build\\intermediates\\cmake\\debug\\obj\\armeabi\\liblsl.so",
+      "runtimeFiles": [
+        "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\ndk\\android-ndk-r14b\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\libs\\armeabi\\libgnustl_static.a"
+      ]
+    }
+  },
+  "toolchains": {
+    "103755156": {
+      "cppCompilerExecutable": "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\ndk\\android-ndk-r14b\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

@@ -211,7 +211,7 @@ public boolean resolveIncomingStream() throws Exception {
 		boolean isSamples = val != 0.0;
 
 		//TODO change to preferences selection again
-		int channelIndex = prefs.one;
+		int channelIndex = 1; //prefs.one;
 		double exemplaryEEGSample = eegSample[channelIndex];
 		if (isSamples && eegDataCallback != null)
 			eegDataCallback.handleEEGSample(exemplaryEEGSample);

@@ -1,0 +1,21 @@
+{
+  "buildFiles": [
+    "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\ndk\\android-ndk-r14b\\build\\cmake\\android.toolchain.cmake",
+    "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\sarah\\Documents\\PhD\\SCALA\\app\\.cxx\\cmake\\release\\mips\" clean"
+  ],
+  "buildTargetsCommand": "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe  -C \"C:\\Users\\sarah\\Documents\\PhD\\SCALA\\app\\.cxx\\cmake\\release\\mips\" {LIST_OF_TARGETS_TO_BUILD}",
+  "libraries": {
+    "lsl-Release-mips": {
+      "artifactName": "lsl",
+      "buildCommand": "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"C:\\Users\\sarah\\Documents\\PhD\\SCALA\\app\\.cxx\\cmake\\release\\mips\" lsl",
+      "abi": "mips",
+      "output": "C:\\Users\\sarah\\Documents\\PhD\\SCALA\\app\\build\\intermediates\\cmake\\release\\obj\\mips\\liblsl.so",
+      "runtimeFiles": [
+        "C:\\Users\\sarah\\AppData\\Local\\Android\\Sdk\\ndk\\android-ndk-r14b\\sources\\cxx-stl\\gnu-libstdc++\\4.9\\libs\\mips\\libgnustl_static.a"
+      ]
+    }
+  }
+}

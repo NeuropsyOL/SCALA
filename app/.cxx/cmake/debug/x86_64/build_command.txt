@@ -1,0 +1,22 @@
+Executable : C:\Users\sarah\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\cmake.exe
+arguments : 
+-HC:\Users\sarah\Documents\PhD\SCALA
+-DCMAKE_CXX_FLAGS=-std=c++11 -frtti -fexceptions
+-DCMAKE_FIND_ROOT_PATH=C:\Users\sarah\Documents\PhD\SCALA\app\.cxx\cmake\debug\prefab\x86_64\prefab
+-DCMAKE_BUILD_TYPE=Debug
+-DCMAKE_TOOLCHAIN_FILE=C:\Users\sarah\Documents\PhD\SCALA\app\.cxx\cmake\debug\x86_64\pre-ndk-r15-wrapper-android.toolchain.cmake
+-DANDROID_ABI=x86_64
+-DANDROID_NDK=C:\Users\sarah\AppData\Local\Android\Sdk\ndk\android-ndk-r14b
+-DANDROID_PLATFORM=android-24
+-DCMAKE_ANDROID_ARCH_ABI=x86_64
+-DCMAKE_ANDROID_NDK=C:\Users\sarah\AppData\Local\Android\Sdk\ndk\android-ndk-r14b
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=C:\Users\sarah\Documents\PhD\SCALA\app\build\intermediates\cmake\debug\obj\x86_64
+-DCMAKE_MAKE_PROGRAM=C:\Users\sarah\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_SYSTEM_VERSION=24
+-BC:\Users\sarah\Documents\PhD\SCALA\app\.cxx\cmake\debug\x86_64
+-GNinja
+jvmArgs : 
+
+Build command args:
