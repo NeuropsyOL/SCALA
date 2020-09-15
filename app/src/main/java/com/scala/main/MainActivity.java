@@ -23,8 +23,6 @@ import com.scala.out.R;
 import com.scala.tools.FileChooser;
 import com.scala.tools.SampleBuffer;
 import com.scala.tools.ScalaPreferences;
-import com.scala.view.CalibrationFragment;
-import com.scala.view.CalibrationResult;
 import com.scala.view.MainFragment;
 import com.scala.view.SettingsFragment;
 
@@ -67,7 +65,7 @@ import java.util.regex.Pattern;
  *
  * @author sarah
  */
-public class MainActivity extends AppCompatActivity implements IEEGSingleSamplesListener, CalibrationFragment.OnCalibrationFragmentListener {
+public class MainActivity extends AppCompatActivity implements IEEGSingleSamplesListener {
 
 
 	/*
@@ -162,9 +160,9 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 			t.show();
 			if (scalaPrefs.checkArtifacts){
 				// the button now delegates to the calibration activity where it collects calibration data
-				CalibrationFragment calibrationFragment = new CalibrationFragment();
-				calibrationFragment.setOriginalPreferences(scalaPrefs);
-				switchFragment(R.id.fragment1, calibrationFragment);
+				//CalibrationFragment calibrationFragment = new CalibrationFragment();
+				//calibrationFragment.setOriginalPreferences(scalaPrefs);
+				//switchFragment(R.id.fragment1, calibrationFragment);
 			}
 		});
 
@@ -356,15 +354,5 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 				lastTimeStampOfVisibleSample = System.currentTimeMillis();
 			});
 		}
-	}
-
-
-	/**
-	 * Receive data from the Calibration Fragment as soon as the calibration is finished.
-	 */
-	@Override
-	public void onCalibrationEnded(CalibrationResult calibRes) {
-		// hand over to the mainController or something else which is good
-		mainController.setup_jASR(calibRes);
 	}
 }

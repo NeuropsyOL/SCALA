@@ -12,8 +12,8 @@ android {
         setProperty("archivesBaseName", "SCALA-$versionName")
 
         compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_7
-            targetCompatibility JavaVersion.VERSION_1_7
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
         }
     }
 
@@ -31,6 +31,7 @@ dependencies {
     implementation files('libs/commons-math3-3.6.1.jar')
     implementation files('libs/rtandroid-20161201.jar')
     implementation files('libs/jna-4.2.2.jar')
+    implementation "com.androidplot:androidplot-core:1.5.7"
 }
 
 //copy native libraries to per project location, otherwise they are not found at runtime
