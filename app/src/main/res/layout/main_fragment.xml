@@ -1,18 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ap="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
-   
-    
+    android:layout_height="match_parent"
+    android:background="@android:color/background_light"
+    android:orientation="horizontal">
+
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/textview" >
-    </TextView>
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/textview"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:typeface="sans"
+        tools:textSize="24sp" />
 
-    <Button
+    <com.androidplot.xy.XYPlot
+        android:id="@+id/plot"
+        style="@style/APDefacto.Light"
+        androidPlot.renderMode="use_background_thread"
+        ap:lineLabelRotationBottom="-45"
+        ap:lineLabels="left|bottom"
+        ap:rangeTitle="range"
+        android:layout_width="fill_parent"
+        android:layout_height="244dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="88dp" />
+
+    <!--<Button
         android:id="@+id/loadRightTemplate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,15 +57,16 @@
         android:layout_alignParentRight="true"
         android:gravity="center_vertical|center_horizontal|left"
         android:text="Load Left Template" />
-
+-->
     <Button
         android:id="@+id/startExperiment"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/loadLeftTemplate"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:text="Start Experiment"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:gravity="bottom"
+        android:text="@string/proceedButton"
         android:textStyle="bold" />
-    
+
+    <!--android:layout_above="@+id/loadLeftTemplate"-->
 </RelativeLayout>

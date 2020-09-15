@@ -15,6 +15,9 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="colorAccent">@color/scala_color</item>
+        <item name="android:colorAccent">@color/scala_color</item>
+        <item name="colorSwitchThumbNormal">@color/scala_color</item>
     </style>
-
 </resources>
+

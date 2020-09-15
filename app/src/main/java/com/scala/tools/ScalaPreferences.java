@@ -8,15 +8,14 @@ package com.scala.tools;
 public final class ScalaPreferences {
 
 	/**
-	 * The port on which we sent out our UDP packets.
+	 * The port on which we sent out our UDP packets to smarting.
 	 */
 	public int sendingPort = 50008;
 
 	/**
-	 * The port on which we receive UDP packets.
+	 * The port on which we receive UDP packets from smarting.
 	 */
 	public int receivingPort = 50006;
-
 
 	public boolean filterOn = true;
 
@@ -32,7 +31,7 @@ public final class ScalaPreferences {
 
 
 	/**
-	 * Matlab: 500 Smarting: 250
+	 * sampling Rate in Hz
 	 */
 	public int samplingRate = 0;
 
@@ -89,8 +88,36 @@ public final class ScalaPreferences {
 	public boolean sendTemplates;
 	
 	
-	public boolean checkArtefacts = false;
-	public double threshold = 0.0;
+	public boolean checkArtifacts = false;
 
+
+	public ScalaPreferences(){
+	}
+
+	/**
+	 * copy constructor to create a second (patched) instance of the preferences object for the calibration.
+	 * @param original
+	 */
+	public ScalaPreferences(ScalaPreferences original) {
+		sendingPort = original.sendingPort;
+		receivingPort = original.receivingPort;
+		filterOn = original.filterOn;
+		filterType = original.filterType;
+		one = original.one;
+		two = original.two;
+		samplingRate = original.samplingRate;
+		buffer_capacity = original.buffer_capacity;
+		isTemplateGeneration = original.isTemplateGeneration;
+		lowerFreq = original.lowerFreq;
+		higherFreq = original.higherFreq;
+		howManyTrialsForTemplateGen = original.howManyTrialsForTemplateGen;
+		bufferIndexLeft = original.bufferIndexLeft;
+		bufferIndexRight = original.bufferIndexRight;
+		saveTemplate = original.saveTemplate;
+		subjectName = original.subjectName;
+		sendUDPmessages = original.sendUDPmessages;
+		sendTemplates = original.sendTemplates;
+		checkArtifacts = original.checkArtifacts;
+	}
 
 }

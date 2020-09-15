@@ -15,4 +15,8 @@
     <string name="pref_filter_default">Bandpass</string>
     <string name="action_favorite">fav</string>
     <string name="pref_filters">pref_filters</string>
+    <string name="proceedButton">Start Experiment</string>
+    <string name="proceedButtonCalib">Proceed with Calibration</string>
+
 </resources>
+

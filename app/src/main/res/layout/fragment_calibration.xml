@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/calibLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.scala.view.CalibrationFragment">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="169dp"
+        android:layout_gravity="center"
+        android:background="@android:color/background_light"
+        tools:alpha="1" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="146dp"
+            android:gravity="bottom"
+            android:text="fetching calibration data.."
+            tools:textSize="@dimen/abc_action_bar_content_inset_material" />
+    </RelativeLayout>
+
+</FrameLayout>

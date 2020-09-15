@@ -283,7 +283,11 @@ public class LSL {
          * See code examples on the LSL wiki. Other information, such as amplifier settings,
          * measurement units if deviating from defaults, setup information, subject information, etc.,
          * can be specified here, as well. Meta-data recommendations follow the XDF file format project
+<<<<<<< HEAD
          * (github.com/sccn/xdf/wiki/Meta-Data or web search for: XDF meta-data).
+=======
+         * (github.com/edu.ucsd.sccn/xdf/wiki/Meta-Data or web search for: XDF meta-data).
+>>>>>>> origin/niceGUI
          *
          * Important: if you use a stream content type for which meta-data recommendations exist, please
          * try to lay out your meta-data in agreement with these recommendations for compatibility with other applications.
