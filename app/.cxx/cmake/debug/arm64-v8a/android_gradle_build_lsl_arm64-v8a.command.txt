@@ -1,7 +1,0 @@
-Executable : C:\Users\sarah\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe
-arguments : 
--C
-C:\Users\sarah\Documents\PhD\SCALA\app\.cxx\cmake\debug\arm64-v8a
-lsl
-jvmArgs : 
-

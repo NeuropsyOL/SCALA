@@ -1,3 +1,0 @@
-C:/Users/sarah/Documents/PhD/SCALA/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/lsl.dir
-C:/Users/sarah/Documents/PhD/SCALA/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
-C:/Users/sarah/Documents/PhD/SCALA/app/.cxx/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir

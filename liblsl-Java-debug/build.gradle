@@ -1,0 +1,3 @@
+configurations.maybeCreate("default")
+//project(':liblsl-Java-debug').projectDir = new File("../liblsl-Java/")
+artifacts.add("default", file('liblsl-Java-debug.aar'))
