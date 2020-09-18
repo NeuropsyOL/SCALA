@@ -1,9 +1,7 @@
 # SCALA
 
 SCALA is an Android application which can be used to realize Brain-Computer Interfaces on smartphones.
-![Main Screen](/docs/SCALA_main.jpg)
-<img height="20">
-
+![Main Screen, 20%](/docs/SCALA_main.jpg)
 
 ## Overview of data flow
 SCALA receives and sends out data using the LabstreamingLayer (https://github.com/labstreaminglayer).
