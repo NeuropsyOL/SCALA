@@ -1,4 +1,4 @@
-# SCALA - **S**ignal Pro**C**essing **A**nd C**L**assification on **A**ndroid
+# SCALA - Signal ProCessing And CLassification on Android
 
 SCALA is an Android application which can be used to realize Brain-Computer Interfaces on smartphones.
 

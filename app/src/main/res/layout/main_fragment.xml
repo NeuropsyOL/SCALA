@@ -23,15 +23,12 @@
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:typeface="sans"
-        tools:textSize="24sp" />
+        tools:textSize="32sp" />
 
     <com.androidplot.xy.XYPlot
         android:id="@+id/plot"
         style="@style/APDefacto.Light"
         androidPlot.renderMode="use_background_thread"
-        ap:lineLabelRotationBottom="-45"
-        ap:lineLabels="left|bottom"
-        ap:rangeTitle="range"
         android:layout_width="fill_parent"
         android:layout_height="244dp"
         android:layout_alignParentBottom="true"

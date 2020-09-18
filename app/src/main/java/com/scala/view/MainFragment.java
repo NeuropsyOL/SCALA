@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.androidplot.util.PixelUtils;
 import com.androidplot.util.Redrawer;
 import com.androidplot.xy.AdvancedLineAndPointRenderer;
+import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.FastLineAndPointRenderer;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYGraphWidget;
@@ -50,37 +51,57 @@ public class MainFragment extends Fragment {
 		tv = (TextView) root.findViewById(R.id.textView1);
 		plot = (XYPlot) root.findViewById(R.id.plot);
 
-		// This is critical for being able to set the color of the plot
+
+		/*
+		Assemble the plot view.
+		Tips here: https://www.javatips.net/api/com.androidplot.xy.simplexyseries
+		 */
 		PixelUtils.init(getContext());
 		plotSampleSource = new SampleDynamicSeries();
-		//eegFormatter =  new MyFadeFormatter(1000);
-		int LINE_COLOUR = Color.rgb(20, 20, 20);
+		// set line color to SCALA color <3
+		int LINE_COLOUR = Color.rgb(251, 103, 101);
+
+		// format line style
 		eegFormatter = new FastLineAndPointRenderer.Formatter(LINE_COLOUR, null,  null);
-		//eegFormatter.setLegendIconEnabled(false);
-		eegFormatter.getLinePaint().setStrokeWidth(3);
+		eegFormatter.getLinePaint().setStrokeWidth(5);
 		plot.addSeries(plotSampleSource, eegFormatter);
 
+		// render plot
 		AdvancedLineAndPointRenderer renderer = plot.getRenderer(AdvancedLineAndPointRenderer.class);
 		plotSampleSource.setRenderer(renderer);
 
-		plot.setLinesPerRangeLabel(3);
-        plot.getBorderPaint().setColor(Color.WHITE);
-
+        // create the graph and place it nicely
         XYGraphWidget graph = plot.getGraph();
-        graph.getBackgroundPaint().setColor(Color.WHITE);
-        graph.getGridBackgroundPaint().setColor(Color.TRANSPARENT);
+		plot.setBorderStyle(XYPlot.BorderStyle.NONE, null, null);
+		// hide weird box around plot by expanding margins
+		plot.setPlotMargins(-100, -100, -50, -100);
+		// adapt position of graph, because we hide the labels later
+		plot.setPlotPadding(-100, 0, 0, -100);
+
+		plot.setRangeBoundaries(-40, 40, BoundaryMode.FIXED);
+
+		// colors of the plot
+		plot.getBorderPaint().setColor(Color.WHITE);
+		plot.setBackgroundColor(Color.WHITE);
+		plot.getBackgroundPaint().setColor(Color.WHITE);
+        graph.getGridBackgroundPaint().setColor(Color.WHITE);
         graph.getDomainGridLinePaint().setColor(Color.TRANSPARENT);
         graph.getDomainOriginLinePaint().setColor(Color.TRANSPARENT);
-        graph.getRangeGridLinePaint().setColor(Color.TRANSPARENT);
-        graph.getRangeOriginLinePaint().setColor(Color.TRANSPARENT);
+        graph.getRangeGridLinePaint().setColor(Color.WHITE);
+        graph.getRangeOriginLinePaint().setColor(Color.WHITE);
 
-        // Domain = X; Range = Y
+        // hide the labels
+		graph.getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).getPaint().setColor(Color.TRANSPARENT);
+		graph.getLineLabelStyle(XYGraphWidget.Edge.LEFT).getPaint().setColor(Color.TRANSPARENT);
+
+		// Domain = X; Range = Y
         plot.setDomainLabel(null);
         plot.setRangeLabel(null);
 
         plot.getLayoutManager().remove(plot.getLegend());
 		plot.getLayoutManager().remove(plot.getBounds());
 		plot.getLayoutManager().remove(plot.getLinesPerRangeLabel());
+
 		plot.getBorderPaint().setColor(Color.WHITE);
 		redrawer = new Redrawer(plot, 10, true);
 		return root;
@@ -99,6 +120,7 @@ public class MainFragment extends Fragment {
 	public void setStreamDetails(String streamInfos, double finalSample ) {
 		tv.setText(streamInfos + "\n Sample Channel Value:  " + finalSample);
 		sampleForUI = finalSample;
+		//TODO the plot is lagging, why?
 		plotSampleSource.addSample(sampleForUI);
 	}
 
