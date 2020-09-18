@@ -2,7 +2,7 @@
 
 SCALA is an Android application which can be used to realize Brain-Computer Interfaces on smartphones.
 ![Main Screen](/docs/SCALA_main.jpg)
-Format: ![Alt Text](url)
+<img src="url" alt="alt text" width="200" height="1000">
 
 
 ## Overview of data flow
