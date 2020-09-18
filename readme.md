@@ -1,7 +1,9 @@
-# SCALA
+# SCALA - **S**ignal Pro**C**essing **A**nd C**L**assification on **A**ndroid
 
 SCALA is an Android application which can be used to realize Brain-Computer Interfaces on smartphones.
+
 ![Main Screen, 20%](/docs/SCALA_main.jpg)
+
 
 ## Overview of data flow
 ### Input of data into SCALA
