@@ -21,7 +21,6 @@ import com.androidplot.xy.XYSeries;
 import com.scala.out.R;
 
 import java.lang.ref.WeakReference;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The Main Fragment corresponding to the MainActivity of the APP which is the 

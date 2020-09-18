@@ -1,7 +1,9 @@
 # SCALA
 
-An Android application for the online signal processing and classification of time-series data. 
-It has been developed at the University of Oldenburg during my PhD. 
+SCALA is an Android application which can be used to realize Brain-Computer Interfaces on smartphones.
+![Main Screen](/docs/SCALA_main.jpg)
+Format: ![Alt Text](url)
+
 
 ## Overview of data flow
 SCALA receives and sends out data using the LabstreamingLayer (https://github.com/labstreaminglayer).
