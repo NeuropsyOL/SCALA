@@ -27,7 +27,7 @@ android {
 
 dependencies {
     //noinspection GradleCompatible
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation files('libs/commons-math3-3.6.1.jar')
     implementation files('libs/rtandroid-20161201.jar')
     implementation "com.androidplot:androidplot-core:1.5.7"
@@ -38,9 +38,10 @@ dependencies {
     // this includes the LSL.aar file which contains the LSL.java class (wrapper) and the .so files
     implementation project(":liblsl-Java-debug")
     // include asr_calibrate aar file which is built in another project
-
     // TODO when including this library, two icons are created on install bevause asr_calibrate
     //  uses an intent with the same name in its main activity as SCALA
     //implementation project(":asr_calibrate") // this is the folder name in the root folder of this app
-    implementation 'androidx.preference:preference:1.0.0'
+
+    // new settings screen things
+    implementation 'androidx.preference:preference:1.1.1'
 }

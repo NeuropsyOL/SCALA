@@ -1,11 +1,10 @@
 package com.scala.main;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
@@ -25,7 +24,7 @@ import com.scala.tools.SampleBuffer;
 import com.scala.tools.ScalaPreferences;
 import com.scala.view.CalibrationFragment;
 import com.scala.view.MainFragment;
-import com.scala.view.SettingsFragment;
+import com.scala.view.SettingsActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -67,13 +66,6 @@ import java.util.regex.Pattern;
  * @author sarah
  */
 public class MainActivity extends AppCompatActivity implements IEEGSingleSamplesListener {
-
-
-	/*
-	 * SCALA gets a signal from PM 500ms before the sound will be played. SCALA then stores
-	 * WINDOW_WIDTH seconds of data for the classification
-	 */
-	private static final int WINDOW_WIDTH = 3; // seconds for the eeg data buffer
 
 	public final static String LSLSTREAM_TAG = "lslstream";
 
@@ -133,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	private static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
 	private Button proceedButton;
+	private SettingsActivity sA = new SettingsActivity();
 
 
 	@Override
@@ -149,7 +142,8 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 			// you shall not update the preferences again
 			proceedButton.setClickable(false);
 			proceedButton.setAlpha(.5f);
-			updatePreferences();
+			sA.updatePreferences();
+			//Intent prefIntent = new Intent(this, SettingsActivity.class);
 			if (mainController == null) {
 				mainController = new MainController(scalaPrefs);
 				mainController.prepare();
@@ -234,36 +228,6 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	}
 
 
-	/**
-	 * This method fills the wrapper preferences object with the settings from
-	 * the Android shared preferences object.
-	 */
-	private void updatePreferences() {
-		PreferenceManager.setDefaultValues(this, R.xml.preferences, READ_AGAIN);
-		/*
-	 	 * Am Android container object containing the preferences.
-		 */
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		scalaPrefs = new ScalaPreferences();
-		scalaPrefs.filterType = prefs.getString("pref_filters","Bandpass");
-		scalaPrefs.samplingRate = Integer.parseInt(prefs.getString("pref_sr", "250"));
-		scalaPrefs.buffer_capacity = WINDOW_WIDTH * scalaPrefs.samplingRate;
-		scalaPrefs.howManyTrialsForTemplateGen = Integer.parseInt(prefs.getString("pref_trials", "10"));
-		if (scalaPrefs.howManyTrialsForTemplateGen == 0){
-			scalaPrefs.isTemplateGeneration = false;
-		}
-		scalaPrefs.sendUDPmessages = prefs.getBoolean("sendUDPmessages", false);
-		scalaPrefs.sendTemplates = prefs.getBoolean("sendTemplates", false);
-		scalaPrefs.one = Integer.parseInt(prefs.getString("one","1"));
-		scalaPrefs.two = Integer.parseInt(prefs.getString("two","2"));
-		scalaPrefs.one -= 1; // adjust for off-by-one index situation
-		scalaPrefs.two -= 1;
-		scalaPrefs.saveTemplate = prefs.getBoolean("saveTemplates", false);
-		scalaPrefs.subjectName = prefs.getString("subjectName", "subj_00");
-		scalaPrefs.checkArtifacts = prefs.getBoolean("checkArtifacts", false);
-		Log.i(LSLSTREAM_TAG, "chosen settings are: " + prefs.getAll() );
-	}
-
 
 	@Override
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -284,9 +248,11 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		switch (item.getItemId()) {
 			case R.id.action_settings:
 				inSettings = true;
-				getSupportFragmentManager().beginTransaction()
+				/*getSupportFragmentManager().beginTransaction()
 						.replace(android.R.id.content, new SettingsFragment())
-						.commit();
+						.commit();*/
+				Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
 				proceedButton.setVisibility(View.INVISIBLE);
 				proceedButton.setClickable(false);
 
@@ -300,33 +266,35 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 
 	/**
 	 * This method overrides the default onBackPressed functionality. This is
-	 * needed because the fragment manager does not support *preferences*
-	 * fragments and this results in a non-working back button
+	 * needed because some things need to be done before we can return to the
+	 * MainActivity
 	 */
-	@Override
+/*	@Override
 	public void onBackPressed() {
 		if (inSettings) {
 			updatePreferences();
-			/*
+			*//*
 			 * prepare() calls makeFilter() which produces a filter object based on
 			 * the settings. Additionally, the MainController gets objects from the
 			 * receiving classes and the InputController and starts the UDP
 			 * listening thread.
-			 */
+			 *//*
 			if (mainController == null) {
 				mainController = new MainController(scalaPrefs);
 				mainController.prepare();
 				mainController.setDiagnosticSampleReceiver(MainActivity.this);
 			}
 			backFromSettingsFragment();
-			return;
+			//return;
 		}
-		super.onBackPressed();
-	}
+		// TODO this returns to home screen instead of MainFragment
+		finish();
+		//super.onBackPressed();
+	}*/
 
 	private void backFromSettingsFragment() {
 		inSettings = false;
-		getFragmentManager().popBackStack();
+		//getFragmentManager().popBackStack();
 		//int proceedButtonText = scalaPrefs.checkArtifacts ? R.string.proceedButtonCalib : R.string.proceedButton;
 		//proceedButton.setText(proceedButtonText);
 		proceedButton.setVisibility(View.VISIBLE);

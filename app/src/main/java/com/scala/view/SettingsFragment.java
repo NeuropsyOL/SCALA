@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -27,6 +28,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		// Load the preferences from an XML resource
 		setPreferencesFromResource(R.xml.preferences, rootKey);
+		// TODO https://medium.com/google-developer-experts/exploring-android-jetpack-preferences-8bcb0b7bdd14
 	}
 
 	@Override
@@ -34,6 +36,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		// This setting is needed because the preferences fragment is transparent without setting th bg color
 		view.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+		TextView textView = new TextView(getActivity());
+		textView.setText("what");
 		return view;
 	}
 
