@@ -1,5 +1,6 @@
 package com.scala.view;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -31,12 +32,14 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * This method fills the wrapper preferences object with the settings from
      * the Android shared preferences object.
+     * @param applicationContext
+     * @return
      */
-    public void updatePreferences() {
+    public ScalaPreferences updatePreferences(Context applicationContext) {
 
         //Context context = getApplicationContext(); //TODO this is null
         //PreferenceManager.setDefaultValues(context, R.xml.preferences, READ_AGAIN);
-        prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        prefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(applicationContext);
         /*
          * Am Android container object containing the preferences.
          */
@@ -58,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
         scalaPrefs.saveTemplate = prefs.getBoolean("saveTemplates", false);
         scalaPrefs.subjectName = prefs.getString("subjectName", "subj_00");
         scalaPrefs.checkArtifacts = prefs.getBoolean("checkArtifacts", false);
-
+        return scalaPrefs;
     }
 
 

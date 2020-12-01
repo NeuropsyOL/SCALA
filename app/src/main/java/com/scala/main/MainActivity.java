@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 			// you shall not update the preferences again
 			proceedButton.setClickable(false);
 			proceedButton.setAlpha(.5f);
-			sA.updatePreferences();
+			scalaPrefs = sA.updatePreferences(getApplicationContext());
 			//Intent prefIntent = new Intent(this, SettingsActivity.class);
 			if (mainController == null) {
 				mainController = new MainController(scalaPrefs);
