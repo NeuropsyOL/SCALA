@@ -75,6 +75,7 @@ public class LSLMarkerReceiver implements IHandleIncomingData {
 				if (doneResolving) {
 					while (true) {
 					 	String[] s = new String[1];
+					 	s[0] = "empty";
 						double timestamp = 0; // wait until you get one
 						try {
 							timestamp = inlet.pull_sample(s);
@@ -83,7 +84,7 @@ public class LSLMarkerReceiver implements IHandleIncomingData {
 						}
 
 						String sample = s[0];
-						//TODO what is this sound thing? Change to someting that the user can set!
+						//TODO Change to someting that the user can set!
 						 if (sample.contains("SOUND") || sample.contains("sound")) {  // this is case-sensitive!
 							 // call the Communication Controller and tell him that we have a sound marker
 							 callback.signalResult("trigger" + sample, timestamp);

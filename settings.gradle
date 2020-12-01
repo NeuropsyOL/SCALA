@@ -1,2 +1,3 @@
+include ':asr_calibrate'
 include ':liblsl-Java-debug'
 include ':app'

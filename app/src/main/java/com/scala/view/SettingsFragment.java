@@ -1,13 +1,13 @@
 package com.scala.view;
 
-import com.scala.out.R;
-
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.preference.PreferenceFragmentCompat;
+
+import com.scala.out.R;
 
 /**
  * Android's way of providing a settings-functionality.
@@ -17,30 +17,23 @@ import android.view.ViewGroup;
  * @author sarah
  *
  */
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragmentCompat {
 
-	/*
-	 * https://developer.android.com/guide/topics/ui/settings.html By default,
-	 * all your app's preferences are saved to a file that's accessible from
-	 * anywhere within your application by calling the static method
-	 * PreferenceManager.getDefaultSharedPreferences().
-	 */
+	public SettingsFragment() {
+		// Required empty public constructor
+	}
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
+	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		// Load the preferences from an XML resource
-		addPreferencesFromResource(R.xml.preferences);
-
+		setPreferencesFromResource(R.xml.preferences, rootKey);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = super.onCreateView(inflater, container, savedInstanceState);
-
 		// This setting is needed because the preferences fragment is transparent without setting th bg color
 		view.setBackgroundColor(getResources().getColor(android.R.color.background_light));
-
 		return view;
 	}
 

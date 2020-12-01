@@ -4,11 +4,12 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.androidplot.util.PixelUtils;
 import com.androidplot.util.Redrawer;
@@ -48,9 +49,8 @@ public class MainFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// set up view, text field and plot
 		View root = inflater.inflate(R.layout.main_fragment, container);
-		tv = (TextView) root.findViewById(R.id.textView1);
-		plot = (XYPlot) root.findViewById(R.id.plot);
-
+		tv = root.findViewById(R.id.textView1);
+		plot = root.findViewById(R.id.plot);
 
 		/*
 		Assemble the plot view.
@@ -103,7 +103,7 @@ public class MainFragment extends Fragment {
 		plot.getLayoutManager().remove(plot.getLinesPerRangeLabel());
 
 		plot.getBorderPaint().setColor(Color.WHITE);
-		redrawer = new Redrawer(plot, 10, true);
+		redrawer = new Redrawer(plot, 50, true);
 		return root;
 	}
 
@@ -120,8 +120,10 @@ public class MainFragment extends Fragment {
 	public void setStreamDetails(String streamInfos, double finalSample ) {
 		tv.setText(streamInfos + "\n Sample Channel Value:  " + finalSample);
 		sampleForUI = finalSample;
-		//TODO the plot is lagging, why?
-		plotSampleSource.addSample(sampleForUI);
+		// TODO the plot is lagging behind
+		// TODO the plot should adapt to the actual value range of the incoming signal
+		//plotSampleSource.addSample(sampleForUI);
+		plotSampleSource.addSample(Math.random()*30);
 	}
 
 	/**

@@ -227,7 +227,7 @@ public class MainController {
 
 	/**
 	 * This is the *main run* for one trial. Whenever a whole buffer of raw
-	 * values is available, an single trial starts. In CLAPP the single steps
+	 * values is available, an single trial starts. In SCALA the single steps
 	 * are the same like in the single trial analysis of Bleichner et al. to get
 	 * comparable results. The order of analysis-steps are listed below. The
 	 * calls to the different classes of the app are made accordingly.
@@ -245,13 +245,12 @@ public class MainController {
 		callFilter();
 		makeDiffChannels();
 		baselineCorrection();
-		//artefactRejection(); 
+		//artefactRejection();
 		callClassifier();  
 
 		// !! most important debug output for comparison of matlab and clapp !!
-		//Log.i(TAG_CLASSIFIER_RESULT, "[Pearson] CLAPP_Trial #" + communicationController.getTrialNumber() + " " + res + " " + anchorSample);
-		Log.i(TAG_CLASSIFIER_RESULT, "[XCorr]   CLAPP_Trial #" + communicationController.getTrialNumber() + " " + resultxCorr);
-
+		//Log.i(TAG_CLASSIFIER_RESULT, "[Pearson] SCALA #" + communicationController.getTrialNumber() + " " + res + " " + anchorSample);
+		Log.i(TAG_CLASSIFIER_RESULT, "[XCorr]   SCALA_Trial #" + communicationController.getTrialNumber() + " " + resultxCorr);
 	}
 
 
@@ -313,7 +312,7 @@ public class MainController {
 
 
 	/**
-	 * Call the classifier and  match the templates with the current trial. CLAPP 
+	 * Call the classifier and  match the templates with the current trial. SCALA
 	 * expects the very first trials after the start of the experiment to be the
 	 * trials that are used to generate the template. Once a template has been
 	 * generated, the classifier is only template matching afterwards.
@@ -425,7 +424,7 @@ public class MainController {
 	
 	
 	/**
-	 * This is a debug method which is used to make sure that matlab and CLAPP are working with the
+	 * This is a debug method which is used to make sure that matlab and SCALA are working with the
 	 * same data in a trial. By doing this, I can make sure that in the comparison, the same trials
 	 * are compared. Additionally, this feature allows it, to find out, how late the UDP signal comes in
 	 * (on average: 3 samples).

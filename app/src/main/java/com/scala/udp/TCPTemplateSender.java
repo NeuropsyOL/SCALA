@@ -11,7 +11,7 @@ import java.nio.FloatBuffer;
 
 import com.scala.tools.SampleBuffer;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * This class is used to send out the generated templates via TCP. The protocol specifications

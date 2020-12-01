@@ -1,13 +1,11 @@
 package com.scala.main;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
@@ -17,12 +15,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.scala.controller.MainController;
 import com.scala.input.IEEGSingleSamplesListener;
 import com.scala.out.R;
 import com.scala.tools.FileChooser;
 import com.scala.tools.SampleBuffer;
 import com.scala.tools.ScalaPreferences;
+import com.scala.view.CalibrationFragment;
 import com.scala.view.MainFragment;
 import com.scala.view.SettingsFragment;
 
@@ -69,8 +70,8 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 
 
 	/*
-	 * SCALA gets a signal from PM 500ms before the sound will be played. CLAP then stores
-	 * 4 seconds of data for the classification
+	 * SCALA gets a signal from PM 500ms before the sound will be played. SCALA then stores
+	 * WINDOW_WIDTH seconds of data for the classification
 	 */
 	private static final int WINDOW_WIDTH = 3; // seconds for the eeg data buffer
 
@@ -154,31 +155,25 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 				mainController.prepare();
 				mainController.setDiagnosticSampleReceiver(MainActivity.this);
 			}
+
 			CharSequence text = "Preferences have been updated.";
 			int duration = Toast.LENGTH_LONG;
 			Toast t = Toast.makeText(getApplicationContext(), text, duration);
 			t.show();
 			if (scalaPrefs.checkArtifacts){
-				// the button now delegates to the calibration activity where it collects calibration data
-				//CalibrationFragment calibrationFragment = new CalibrationFragment();
-				//calibrationFragment.setOriginalPreferences(scalaPrefs);
-				//switchFragment(R.id.fragment1, calibrationFragment);
+				// create StartCalibration Button here as well
+
+
+				// create Calibration Fragment and start Calibration in there
+				CalibrationFragment calibrationFragment = new CalibrationFragment();
+				// switch to calibration Fragment here
 			}
 		});
-
 
 		PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
 		assert powerManager != null;
 		WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SCALA:MyWakelockTag");
 		wakeLock.acquire();
-	}
-
-	private void switchFragment(int fragmentId, Fragment sf) {
-		getFragmentManager()
-				.beginTransaction()
-				.replace(fragmentId, sf)
-				.addToBackStack(null)
-				.commit();
 	}
 
 	/**
@@ -273,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	@Override
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
 		View view = super.onCreateView(name, context, attrs);
-		mf = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment1);
+		mf = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.mainActivityFragment);
 		return view;
 	}
 
@@ -289,7 +284,9 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 		switch (item.getItemId()) {
 			case R.id.action_settings:
 				inSettings = true;
-				switchFragment(R.id.fragment1, new SettingsFragment());
+				getSupportFragmentManager().beginTransaction()
+						.replace(android.R.id.content, new SettingsFragment())
+						.commit();
 				proceedButton.setVisibility(View.INVISIBLE);
 				proceedButton.setClickable(false);
 
@@ -330,8 +327,8 @@ public class MainActivity extends AppCompatActivity implements IEEGSingleSamples
 	private void backFromSettingsFragment() {
 		inSettings = false;
 		getFragmentManager().popBackStack();
-		int proceedButtonText = scalaPrefs.checkArtifacts ? R.string.proceedButtonCalib : R.string.proceedButton;
-		proceedButton.setText(proceedButtonText);
+		//int proceedButtonText = scalaPrefs.checkArtifacts ? R.string.proceedButtonCalib : R.string.proceedButton;
+		//proceedButton.setText(proceedButtonText);
 		proceedButton.setVisibility(View.VISIBLE);
 		proceedButton.setClickable(true);
 	}
